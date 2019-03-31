@@ -24,3 +24,6 @@ man-db
 policykit-1
 ssh-import-id
 rng-tools
+mc
+git
+python3 python3-dev
