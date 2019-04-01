@@ -19,8 +19,8 @@ build_sbb_image:
   image: debian:stretch
   dependencies: []
   script: 
-    - apt-get update 
-    - apt-get -yy install git vim parted debootstrap zerofree zip dosfstools bsdtar libcap2-bin rsync grep udev xz-utils curl xxd file kmod
+    - apt-get update  
+    - apt-get -yy install git vim parted debootstrap zerofree zip dosfstools bsdtar libcap2-bin rsync grep udev xz-utils curl xxd file kmod quilt qemu-user-static
     - ./build.sh -c smart_black_box.conf
     - cp ./deploy/*.gz ./mnt/software/IMG/faccos-sbb
   only: 
