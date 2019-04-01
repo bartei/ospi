@@ -3,13 +3,6 @@ stages:
 
 build_sbb_image:
   stage: build_sbb_image  
-  variables: 
-    IMG_NAME: 'faccos-sbb'
-    DEPLOY_ZIP: '1'
-    FIRST_USER_NAME: 'egg'
-    FIRST_USER_PASS: 'egg'
-    ENABLE_SSH: '1'
-    STAGE_LIST: 'stage0 stage1 stage2'
   script: 
     # printing env variables to see if correct values defined above are correct
     - export
@@ -20,7 +13,7 @@ build_sbb_image:
     # install dependencies
     - sudo apt-get -yy install git vim parted debootstrap zerofree zip dosfstools bsdtar libcap2-bin rsync grep udev xz-utils curl xxd file kmod quilt qemu-user-static
     # build sbb image using variables 
-    - sudo ./build.sh
+    - sudo ./build.sh -c smart_black_box.conf
     # rename last file found in below folder using current datetime
     #- $(date +%Y.%m.%d.%H.%M.%S)
     # copy image file to destination
