@@ -1,0 +1,13 @@
+[Unit]
+Description=Client Services Bootstrap
+Wants=local-fs.target
+Before=network.target network-online.target pagekite.service
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/bootstrap.sh
+
+[Install]
+WantedBy=multi-user.target
+WantedBy=network-online.target
+
