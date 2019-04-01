@@ -1,6 +1,6 @@
 stages:
   - build_sbb_image
-  - clean
+  - cleanup
 
 build_sbb_image:
   stage: build_sbb_image  
@@ -18,7 +18,7 @@ build_sbb_image:
   only: 
     - master
 
-clean:
+cleanup:
   stage: cleanup
   script:
   - echo "Time to clean up"
