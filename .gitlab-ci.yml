@@ -2,10 +2,10 @@ variables:
   IMAGE_TAG_BASE: $CI_REGISTRY_IMAGE/base
 
 stages:
-  - build_smart_black_box_image
+  - build_sbb_image
 
-build_smart_black_box_image:
-  stage: build_smart_black_box_image
+build_sbb_image:
+  stage: build_sbb_image
   image: gitlab.faccousa.net:4567/faccos/facco-os
   dependencies: []
   script: 
