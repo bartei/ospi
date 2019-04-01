@@ -1,11 +1,10 @@
 stages:
   - build_sbb_image
+  - clean
 
 build_sbb_image:
   stage: build_sbb_image  
   script: 
-    # destroy all cached data from previous runs
-    # - sudo rm -Rf ./work
     # update apt repos
     - sudo apt-get update  
     # install dependencies
@@ -18,3 +17,14 @@ build_sbb_image:
     - cp ./deploy/$IMG_NAME.gz ./mnt/software/IMG/faccos-sbb
   only: 
     - master
+
+clean:
+  stage: cleanup
+  script:
+  - echo "Time to clean up"
+  after_script:
+  - set "BUILD_DIR=%CI_PROJECT_DIR%"
+  - set "BUILD_DIR=%BUILD_DIR:/=\%"
+  - echo "Cleaning %BUILD_DIR%"
+  - rmdir /S /Q %BUILD_DIR%
+  - exit /b 0
