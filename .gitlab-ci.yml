@@ -1,5 +1,5 @@
-variables:
-  IMAGE_TAG_BASE: $CI_REGISTRY_IMAGE/base
+# variables:
+#   IMAGE_TAG_BASE: $CI_REGISTRY_IMAGE/base
 
 stages:
   - build_sbb_image
@@ -16,7 +16,6 @@ stages:
 
 build_sbb_image:
   stage: build_sbb_image
-  image: debian:stretch
   dependencies: []
   script: 
     - apt-get update  
