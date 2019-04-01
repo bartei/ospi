@@ -2,19 +2,19 @@ stages:
   - build_sbb_image
 
 build_sbb_image:
-  stage: build_sbb_image
-  variables:
-    IMG_NAME: faccos-sbb-$(date +%Y.%m.%d.%H.%M.%S)
+  stage: build_sbb_image  
+  variables: 
     DEPLOY_ZIP: '1'
     FIRST_USER_NAME: 'egg'
     FIRST_USER_PASS: 'egg'
     ENABLE_SSH: '1'
     STAGE_LIST: 'stage0 stage1 stage2'
   script: 
+    - IMG_NAME=faccos-sbb-$(date +%Y.%m.%d.%H.%M.%S)
     # printing env variables to see if correct values defined above are correct
     - export
     # destroy all cached data from previous runs
-    - sudo rm -R ./work
+    - sudo rm -Rf ./work
     # update apt repos
     - sudo apt-get update  
     # install dependencies
