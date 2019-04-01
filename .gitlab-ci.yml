@@ -4,11 +4,22 @@ variables:
 stages:
   - build_sbb_image
 
+# build_sbb_image:
+#   stage: build_sbb_image
+#   image: gitlab.faccousa.net:4567/faccos/facco-os
+#   dependencies: []
+#   script: 
+#     - ./build.sh -c smart_black_box.conf
+#     - cp ./deploy/*.gz ./mnt/software/IMG/faccos-sbb
+#   only: 
+#     - master
+
 build_sbb_image:
   stage: build_sbb_image
   image: debian:stretch
   dependencies: []
   script: 
+    - apt-get update 
     - apt-get -yy install git vim parted debootstrap zerofree zip dosfstools bsdtar libcap2-bin rsync grep udev xz-utils curl xxd file kmod
     - ./build.sh -c smart_black_box.conf
     - cp ./deploy/*.gz ./mnt/software/IMG/faccos-sbb
