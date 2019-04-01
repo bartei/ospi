@@ -4,6 +4,7 @@ stages:
 build_sbb_image:
   stage: build_sbb_image  
   variables: 
+    IMG_NAME: 'faccos-sbb'
     DEPLOY_ZIP: '1'
     FIRST_USER_NAME: 'egg'
     FIRST_USER_PASS: 'egg'
@@ -19,7 +20,9 @@ build_sbb_image:
     # install dependencies
     - sudo apt-get -yy install git vim parted debootstrap zerofree zip dosfstools bsdtar libcap2-bin rsync grep udev xz-utils curl xxd file kmod quilt qemu-user-static
     # build sbb image using variables 
-    - export IMG_NAME=faccos-sbb-$(date +%Y.%m.%d.%H.%M.%S) && sudo ./build.sh
+    - sudo ./build.sh
+    # rename last file found in below folder using current datetime
+    #- $(date +%Y.%m.%d.%H.%M.%S)
     # copy image file to destination
     - cp ./deploy/$IMG_NAME.gz ./mnt/software/IMG/faccos-sbb
   only: 
