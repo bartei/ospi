@@ -10,7 +10,6 @@ build_sbb_image:
     ENABLE_SSH: '1'
     STAGE_LIST: 'stage0 stage1 stage2'
   script: 
-    - IMG_NAME=faccos-sbb-$(date +%Y.%m.%d.%H.%M.%S)
     # printing env variables to see if correct values defined above are correct
     - export
     # destroy all cached data from previous runs
@@ -20,7 +19,7 @@ build_sbb_image:
     # install dependencies
     - sudo apt-get -yy install git vim parted debootstrap zerofree zip dosfstools bsdtar libcap2-bin rsync grep udev xz-utils curl xxd file kmod quilt qemu-user-static
     # build sbb image using variables 
-    - sudo ./build.sh
+    - export IMG_NAME=faccos-sbb-$(date +%Y.%m.%d.%H.%M.%S) && sudo ./build.sh
     # copy image file to destination
     - cp ./deploy/$IMG_NAME.gz ./mnt/software/IMG/faccos-sbb
   only: 
