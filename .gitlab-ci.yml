@@ -18,7 +18,6 @@ build_sbb_image:
   stage: build_sbb_image
   dependencies: []
   script: 
-    - whoami
     - sudo apt-get update  
     - sudo apt-get -yy install git vim parted debootstrap zerofree zip dosfstools bsdtar libcap2-bin rsync grep udev xz-utils curl xxd file kmod quilt qemu-user-static
     - ./build.sh -c smart_black_box.conf
