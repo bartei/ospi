@@ -4,10 +4,8 @@ stages:
 build_sbb_image:
   stage: build_sbb_image  
   script: 
-    # printing env variables to see if correct values defined above are correct
-    - export
     # destroy all cached data from previous runs
-    - sudo rm -Rf ./work
+    # - sudo rm -Rf ./work
     # update apt repos
     - sudo apt-get update  
     # install dependencies
