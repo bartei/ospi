@@ -4,6 +4,8 @@ stages:
 
 build_sbb_image:
   stage: build_sbb_image  
+  before_script:
+    - sudo git clean -ffdx
   script: 
     # update apt repos
     - sudo apt-get update  
@@ -11,10 +13,8 @@ build_sbb_image:
     - sudo apt-get -yy install git vim parted debootstrap zerofree zip dosfstools bsdtar libcap2-bin rsync grep udev xz-utils curl xxd file kmod quilt qemu-user-static
     # build sbb image using variables 
     - sudo ./build.sh -c smart_black_box.conf
-    # rename last file found in below folder using current datetime
-    #- $(date +%Y.%m.%d.%H.%M.%S)
     # copy image file to destination
-    - cp ./deploy/$IMG_NAME.gz ./mnt/software/IMG/faccos-sbb
+    - sudo cp ./deploy/*.zip /mnt/software/IMG/faccos-sbb
   only: 
     - master
 
