@@ -6,7 +6,9 @@ build_sbb_image:
   stage: build_sbb_image  
   script: 
     # cleaning up old working files built by root on previous ci runs
-    - sudo rm -fR ./work/*
+    - sudo rm -fR /opt/work/*
+    # cleaning up old deploying files built by root on previous ci runs
+    - sudo rm -fR /opt/deploy/*
     # update apt repos
     - sudo apt-get update  
     # install dependencies
@@ -14,7 +16,7 @@ build_sbb_image:
     # build sbb image using variables 
     - sudo ./build.sh -c smart_black_box.conf
     # copy image file to destination
-    - sudo cp ./deploy/*.zip /mnt/software/IMG/faccos-sbb
+    - sudo cp /opt/deploy/*.zip /mnt/software/IMG/faccos-sbb
   only: 
     - master
 
