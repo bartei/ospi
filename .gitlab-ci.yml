@@ -1,8 +1,10 @@
 stages:
   - build_sbb_image
+  - cleanup_build
 
 build_sbb_image:
   stage: build_sbb_image  
+    - 
   script: 
     # cleaning up old working files built by root on previous ci runs
     - sudo rm -fR ./work/*
@@ -16,3 +18,9 @@ build_sbb_image:
     - sudo cp ./deploy/*.zip /mnt/software/IMG/faccos-sbb
   only: 
     - master
+
+cleanup_build:
+  stage: cleanup_build
+  script:
+    - sudo git clean -ffdx
+  when: always
