@@ -14,7 +14,7 @@ build_sbb_image:
     # rename last file found in below folder using current datetime
     #- $(date +%Y.%m.%d.%H.%M.%S)
     # copy image file to destination
-    - cp ./deploy/$IMG_NAME.gz ./mnt/software/IMG/faccos-sbb
+    - cp ./deploy/*.zip /mnt/software/IMG/faccos-sbb
   only: 
     - master
 
