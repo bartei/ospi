@@ -1,6 +1,5 @@
 stages:
   - build_sbb_image
-  - cleanup
 
 build_sbb_image:
   stage: build_sbb_image  
@@ -19,14 +18,3 @@ build_sbb_image:
     - sudo cp ./deploy/*.zip /mnt/software/IMG/faccos-sbb
   only: 
     - master
-
-cleanup:
-  stage: cleanup
-  script:
-  - echo "Time to clean up"
-  after_script:
-  - set "BUILD_DIR=%CI_PROJECT_DIR%"
-  - set "BUILD_DIR=%BUILD_DIR:/=\%"
-  - echo "Cleaning %BUILD_DIR%"
-  - rmdir /S /Q %BUILD_DIR%
-  - exit /b 0
