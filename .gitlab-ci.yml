@@ -8,7 +8,7 @@ build_sbb_image:
     - sudo git clean -ffdx
   script: 
     # cleaning up old working files built by root on previous ci runs
-    - sudo rm -R ./work/*
+    - sudo rm -fR ./work/*
     # update apt repos
     - sudo apt-get update  
     # install dependencies
