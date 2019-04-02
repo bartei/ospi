@@ -4,7 +4,6 @@ stages:
 
 build_sbb_image:
   stage: build_sbb_image  
-    - 
   script: 
     # cleaning up old working files built by root on previous ci runs
     - sudo rm -fR ./work/*
