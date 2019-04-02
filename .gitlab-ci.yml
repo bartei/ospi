@@ -1,11 +1,8 @@
 stages:
   - build_sbb_image
 
-  
 build_sbb_image:
   stage: build_sbb_image  
-  before_script:
-    - sudo git clean -ffdx
   script: 
     # cleaning up old working files built by root on previous ci runs
     - sudo rm -fR ./work/*
