@@ -1,6 +1,7 @@
 stages:
   - build_sbb_image
 
+  
 build_sbb_image:
   stage: build_sbb_image  
   before_script:
