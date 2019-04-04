@@ -1,5 +1,5 @@
 [Unit]
-Description=Client Services Bootstrap
+Description=Client Bootstrap
 Wants=local-fs.target
 Before=network.target network-online.target pagekite.service
 
