@@ -5,7 +5,8 @@ build_sbb_image:
   stage: build_sbb_image  
   script: 
     # cleaning up old working files built by root on previous ci runs
-    - sudo rm -fR /opt/pi-gen/work/*
+    # comment this line for faster inage building
+    # - sudo rm -fR /opt/pi-gen/work/*
     # cleaning up old deploying files built by root on previous ci runs
     - sudo rm -fR /opt/pi-gen/deploy/*
     # update apt repos
