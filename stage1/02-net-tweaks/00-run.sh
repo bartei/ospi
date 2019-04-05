@@ -7,6 +7,6 @@ install -m 644 files/hostname "${ROOTFS_DIR}/etc/hostname"
 install -m 644 files/interfaces "${ROOTFS_DIR}/etc/network/interfaces"
 
 mkdir -p "${ROOTFS_DIR}/boot/interfaces.d"
-install -m 644 files/eth0 "${ROOTFS_DIR}/boot/interfaces.d"
+install -m 644 files/eth0 "${ROOTFS_DIR}/boot/interfaces.d/"
 
 ln -sf /dev/null "${ROOTFS_DIR}/etc/systemd/network/99-default.link"
