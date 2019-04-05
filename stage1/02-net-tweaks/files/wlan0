@@ -10,4 +10,3 @@
 #        netmask 255.255.255.0
 #        gateway 10.10.10.1
 #        dns-nameservers 10.10.10.1 8.8.8.8
-#        dns-search 8.8.8.8
