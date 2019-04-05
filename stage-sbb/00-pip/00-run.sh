@@ -9,3 +9,6 @@ on_chroot << EOF
 cd /tmp
 python3 get-pip.py
 EOF
+
+# Add pip extra-index-url for the sources we intend to use
+install -m 644 files/pip.conf		"${ROOTFS_DIR}/etc/pip.conf"
