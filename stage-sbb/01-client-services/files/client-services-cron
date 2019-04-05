@@ -1,0 +1,7 @@
+# This file contains the entries to be executed by crontab in order to run
+# the client services actions
+# Stefano Bertelli - 2019.04.05
+#
+
+* *     * * *   root    /usr/local/bin/client-services --sync_state_to_portal
+* *     * * *   root    /usr/local/bin/client-services --update_stats_file
