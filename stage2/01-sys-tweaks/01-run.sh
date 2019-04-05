@@ -23,6 +23,7 @@ fi
 systemctl enable regenerate_ssh_host_keys
 EOF
 
+if [ -n "$CREATE_USER" ]; then
 on_chroot <<EOF
 for GRP in input spi i2c gpio; do
 	groupadd -f -r "\$GRP"
@@ -31,6 +32,9 @@ for GRP in adm dialout cdrom audio users sudo video games plugdev input gpio spi
   adduser $FIRST_USER_NAME \$GRP
 done
 EOF
+else
+	echo "Skipping groups, no additional user created on the system"
+fi
 
 on_chroot << EOF
 setupcon --force --save-only -v
