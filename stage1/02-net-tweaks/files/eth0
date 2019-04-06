@@ -1,5 +1,13 @@
+################################################
+# default: setup a wired connection using dhcp #
+################################################
+
 auto eth0
 iface eth0 inet dhcp
+
+####################################################################################
+# uncomment the entire block below to manually setup a wired connection using dhcp #
+####################################################################################
 
 # iface eth0 inet static
 #        address 10.10.10.101
