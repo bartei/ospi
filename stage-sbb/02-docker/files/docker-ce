@@ -1,0 +1,3 @@
+Package: docker*
+Pin: version 18.06.0~ce~3-0~raspbian
+Pin-Priority: 900
