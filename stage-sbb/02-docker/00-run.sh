@@ -9,6 +9,6 @@ wget https://download.docker.com/linux/raspbian/gpg
 apt-key add gpg
 apt-get update
 apt-get install -y --no-install-recommends docker-ce
-apt-get install libssl-dev python3-dev
+apt-get install -y libssl-dev python3-dev
 pip install -U docker-compose==1.23.2
 EOF
