@@ -1,7 +1,15 @@
+##########################################################################
+# uncomment the entire block below to setup a wifi connection using dhcp #
+##########################################################################
+
 #auto wlan0
 #iface wlan0 inet dhcp
 #        wpa-essid "Facco"
 #        wpa-psk "facco2016"
+
+######################################################################
+# uncomment the entire block below to setup a manual wifi connection #
+######################################################################
 
 #iface wlan0 inet static
 #        wpa-essid "Facco"
