@@ -6,7 +6,7 @@ install -v -m 644 files/fstab "${ROOTFS_DIR}/etc/fstab"
 install -m 755 files/overlayroot.sh "${ROOTFS_DIR}/sbin/overlayroot.sh"
 
 
-if [ -n "$CREATE_USER" ]; then
+if [ "$CREATE_USER" = "1" ]; then
 on_chroot << EOF
 if ! id -u ${FIRST_USER_NAME} >/dev/null 2>&1; then
         adduser --disabled-password --gecos "" ${FIRST_USER_NAME}

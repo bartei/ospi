@@ -23,7 +23,7 @@ fi
 systemctl enable regenerate_ssh_host_keys
 EOF
 
-if [ -n "$CREATE_USER" ]; then
+if [ "$CREATE_USER" = "1" ]; then
 on_chroot <<EOF
 for GRP in input spi i2c gpio; do
 	groupadd -f -r "\$GRP"
