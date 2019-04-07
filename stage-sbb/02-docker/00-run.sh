@@ -2,6 +2,10 @@
 
 install -m 644 files/docker.list "${ROOTFS_DIR}/etc/apt/sources.list.d/docker.list"
 
+# Install the new fstab since we are using a separate partition for the docker containers
+log "Overwriting the original fstab with the one contemplating the var/lib/docker mount point for p4"
+
+install -m 644 files/fstab "${ROOTFS_DIR}/etc/fstab"
 # Install python pip for python3
 on_chroot << EOF
 wget https://download.docker.com/linux/raspbian/gpg
