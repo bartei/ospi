@@ -11,3 +11,11 @@ install -m 644 files/eth0 "${ROOTFS_DIR}/boot/interfaces.d/"
 install -m 644 files/wlan0 "${ROOTFS_DIR}/boot/interfaces.d/"
 
 ln -sf /dev/null "${ROOTFS_DIR}/etc/systemd/network/99-default.link"
+
+# updating ifplugd config file 
+install -m 644 files/ifplugd "${ROOTFS_DIR}/etc/default/ifplugd"
+
+# enabling ifplugd service 
+on_chroot << EOF
+systemctl enable ifplugd
+EOF

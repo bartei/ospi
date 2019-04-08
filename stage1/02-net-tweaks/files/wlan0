@@ -4,8 +4,8 @@
 
 # auto wlan0
 # iface wlan0 inet dhcp
-#        wpa-essid "Facco"
-#        wpa-psk "facco2016"
+#        wpa-essid "name"
+#        wpa-psk "password"
 
 ######################################################################
 # uncomment the entire block below to setup a manual wifi connection #
@@ -13,8 +13,8 @@
 
 # auto wlan0
 # iface wlan0 inet static
-#        wpa-essid "Facco"
-#        wpa-psk "facco2016"
+#        wpa-essid "name"
+#        wpa-psk "password"
 #        address 10.10.10.100
 #        netmask 255.255.255.0
 #        gateway 10.10.10.1
