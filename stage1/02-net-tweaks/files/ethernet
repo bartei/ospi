@@ -4,7 +4,7 @@ uuid=60d17e82-1be7-3d0f-b924-e980be41fcba
 type=ethernet
 
 [ipv6]
-method=disabled
+method=ignore
 
 [ipv4]
 
