@@ -1,0 +1,17 @@
+[connection]
+id=ethernet
+uuid=60d17e82-1be7-3d0f-b924-e980be41fcba
+type=ethernet
+
+[ipv6]
+method=ignore
+
+[ipv4]
+
+# use this block to use dhcp wired connection
+method=auto
+
+# otherwise use this block to set the connection manually
+# method=manual
+# address1=10.0.0.123/16,10.0.0.1
+# dns=10.0.0.1;8.8.8.8;
