@@ -7,11 +7,9 @@ type=ethernet
 method=ignore
 
 [ipv4]
-
-# use this block to use dhcp wired connection
+# available values: auto, manual, ignore
 method=auto
 
-# otherwise use this block to set the connection manually
-# method=manual
+# uncomment when using method=manual
 # address1=10.0.0.123/16,10.0.0.1
 # dns=10.0.0.1;8.8.8.8;

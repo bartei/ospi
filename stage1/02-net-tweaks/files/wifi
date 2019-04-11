@@ -3,24 +3,22 @@ id=wifi
 uuid=319f2d8e-3ce7-4e47-b6eb-fabb0aa69f68
 type=wifi
 
+[ipv6]
+method=ignore
+
 [wifi]
 mode=infrastructure
-ssid=Facco
+ssid=[wifi_network_name_here]
 
 [wifi-security]
 auth-alg=open
 key-mgmt=wpa-psk
-psk=facco2016
-
-[ipv6]
-method=ignore
+psk=[wifi_network_pass_here]
 
 [ipv4]
+# available values: auto, manual, ignore
+method=ignore
 
-# use this block to use dhcp wired connection
-method=auto
-
-# otherwise use this block to set the connection manually
-# method=manual
+# uncomment when using method=manual
 # address1=10.0.0.123/16,10.0.0.1
 # dns=10.0.0.1;8.8.8.8;
