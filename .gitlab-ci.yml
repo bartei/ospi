@@ -16,8 +16,10 @@ build_sbb_image:
     # install dependencies
     - sudo apt-get -yy install git vim parted debootstrap zerofree zip dosfstools bsdtar libcap2-bin rsync grep udev xz-utils curl xxd file kmod quilt qemu-user-static
     # build sbb image using variables 
-    - sudo ./build.sh -c smart_black_box.conf
-    # copy image file to destination
-    - sudo cp /opt/pi-gen/deploy/*.zip /mnt/software/IMG/faccos-sbb
+    - sudo ./build.sh -c build.conf
+    # copy sbb image file to destination
+    - sudo cp /opt/pi-gen/deploy/faccos-sbb.zip /mnt/software/IMG/faccos-sbb
+    # copy hmi image file to destination
+    - sudo cp /opt/pi-gen/deploy/*faccos-hmi.zip /mnt/software/IMG/faccos-hmi
   only: 
     - master
