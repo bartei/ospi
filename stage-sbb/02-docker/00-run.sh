@@ -1,7 +1,13 @@
 #!/bin/bash -e
 
+# adding repo to get docker apt package
 install -m 644 files/docker.list "${ROOTFS_DIR}/etc/apt/sources.list.d/docker.list"
+
+# pinning of the docker version (newer versions of docker are slow on Raspberry PI)
 install -m 644 files/docker-ce "${ROOTFS_DIR}/etc/apt/preferences.d/docker-ce"
+
+# update service docker file in order to change work directory from /var/lib/docker to /opt/docker
+install -m 644 files/docker.service "${ROOTFS_DIR}/lib/systemd/system/docker.service"
 
 # Install the new fstab since we are using a separate partition for the docker containers
 log "Overwriting the original fstab with the one contemplating the var/lib/docker mount point for p4"
