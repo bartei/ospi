@@ -3,6 +3,7 @@ console-setup keyboard-configuration debconf-utils parted unzip
 build-essential manpages-dev python bash-completion gdb pkg-config
 python-rpi.gpio v4l-utils
 avahi-daemon
+avahi-utils
 lua5.1
 luajit
 hardlink ca-certificates curl
@@ -25,3 +26,4 @@ rng-tools
 mc
 git
 python3
+ipython3
