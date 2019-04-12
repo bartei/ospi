@@ -4,6 +4,8 @@ stages:
 build_sbb_image:
   stage: build_sbb_image  
   script: 
+    # make sure corect folders exist
+    - sudo mkdir -p /opt/pi-gen/
     # cleaning up old working files built by root on previous ci runs
     # comment this line for faster inage building
     # - sudo rm -fR /opt/pi-gen/work/*
