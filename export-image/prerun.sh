@@ -98,12 +98,12 @@ mkfs.ext4 -L rootfs -O "$ROOT_FEATURES" "$ROOT_RW_DEV" > /dev/null
 mkfs.ext4 -L rootfs -O "$ROOT_FEATURES" "$OPT_DEV" > /dev/null
 
 mount -v "$ROOT_DEV" "${ROOTFS_DIR}" -t ext4
-mkdir -p "${ROOTFS_DIR}/boot"
-# mkdir -p "${ROOTFS_DIR}/mnt/rw"
-mount -v "$BOOT_DEV" "${ROOTFS_DIR}/boot" -t vfat
-# mount -v "$ROOT_RW_DEV" "${ROOTFS_DIR}/mnt/rw" -t ext4
 
-# mount partition on opt directory
+# mount partition on boot folder
+mkdir -p "${ROOTFS_DIR}/boot"
+mount -v "$BOOT_DEV" "${ROOTFS_DIR}/boot" -t vfat
+
+# mount partition on opt folder
 mkdir -p /opt
 mount -v "$OPT_DEV" "${ROOTFS_DIR}/opt" -t ext4
 
