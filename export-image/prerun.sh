@@ -18,7 +18,7 @@ ROOTRW_P_START=$((ROOTRO_P_END + 1))
 ROOTRW_P_END=$((ROOTRW_P_START + 1 * 1024 * 1024 * 1024 / 512))
 
 OPT_P_START=$((ROOTRW_P_END + 1))
-OPT_P_END=$((OPT_P_START + 32 * 1024 * 1024 / 512))
+OPT_P_END=$((OPT_P_START + 1 * 1024 * 1024 * 1024 / 512))
 
 echo "Boot Start Sector: ${BOOT_P_START}"
 echo "Boot End Sector: ${BOOT_P_END}"
