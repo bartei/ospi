@@ -104,7 +104,7 @@ mkdir -p "${ROOTFS_DIR}/boot"
 mount -v "$BOOT_DEV" "${ROOTFS_DIR}/boot" -t vfat
 
 # mount partition on opt folder
-mkdir -p /opt
+mkdir -p "${ROOTFS_DIR}/opt"
 mount -v "$OPT_DEV" "${ROOTFS_DIR}/opt" -t ext4
 
 # The next commands perform the physical copy of the chroot installed system into the final img file.
