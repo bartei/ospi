@@ -8,7 +8,7 @@ build_sbb_image:
     - sudo mkdir -p /opt/pi-gen/
     # cleaning up old working files built by root on previous ci runs
     # comment this line for faster inage building
-    - sudo rm -fR /opt/pi-gen/work/*
+    # - sudo rm -fR /opt/pi-gen/work/*
     # cleaning up old deploying files built by root on previous ci runs
     - sudo rm -fR /opt/pi-gen/deploy/*
     # update apt repos
