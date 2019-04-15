@@ -14,5 +14,5 @@ install -m 755 files/update-hostname.sh		"${ROOTFS_DIR}/sbin/"
 
 on_chroot << EOF
 systemctl enable pagekite
-systemctl enable client-bootstrap
+systemctl enable update-hostname
 EOF
