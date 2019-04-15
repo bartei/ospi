@@ -7,10 +7,10 @@ install -m 644 files/base_kite		"${ROOTFS_DIR}/etc/"
 install -m 644 files/base_hosts		"${ROOTFS_DIR}/etc/"
 
 # Install client bootstrap service on /etc/systemd/systm
-install -m 644 files/client-bootstrap.service		"${ROOTFS_DIR}/etc/systemd/system/"
+install -m 644 files/update-hostname.service		"${ROOTFS_DIR}/etc/systemd/system/"
 
 # Install the bootstrap shell script into the sbin folder
-install -m 755 files/bootstrap.sh		"${ROOTFS_DIR}/sbin/"
+install -m 755 files/update-hostname.sh		"${ROOTFS_DIR}/sbin/"
 
 on_chroot << EOF
 systemctl enable pagekite

@@ -1,0 +1,13 @@
+[Unit]
+Description=Update Hostname
+Wants=local-fs.target
+Before=network.target network-online.target pagekite.service avahi-daemon.service
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/update-hostname.sh
+
+[Install]
+WantedBy=multi-user.target
+WantedBy=network-online.target
+
