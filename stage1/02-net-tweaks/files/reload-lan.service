@@ -1,7 +1,7 @@
 [Unit]
 Description=Lan Network Driver Reload
 Wants=network.target network-online.target
-After=client-bootstrap.service
+After=update-hostname.service
 
 [Service]
 Type=oneshot
