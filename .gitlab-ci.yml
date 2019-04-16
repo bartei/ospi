@@ -1,8 +1,8 @@
 stages:
-  - build_sbb_image
+  - build_images
 
-build_sbb_image:
-  stage: build_sbb_image  
+build_images:
+  stage: build_images  
   script: 
     # make sure corect folders exist
     - sudo mkdir -p /opt/pi-gen/
