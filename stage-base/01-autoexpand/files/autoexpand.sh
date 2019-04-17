@@ -7,5 +7,5 @@ else
   parted /dev/mmcblk0 ---pretend-input-tty unit % resizepart 4 Yes 100%
   resize2fs /dev/mmcblk0p4
   touch /etc/diskextended
-  logger "Resizing latest partition to allow for more space for docker"
+  logger "Resizing latest partition"
 fi
