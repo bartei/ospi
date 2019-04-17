@@ -18,8 +18,8 @@ build_images:
     # build sbb image using variables 
     - sudo ./build.sh -c build.conf
     # copy sbb image file to destination
-    - sudo cp /opt/pi-gen/deploy/*faccos-sbb.zip /mnt/software/IMG/faccos-sbb
+    - sudo cp /opt/pi-gen/deploy/*faccos-sbb.zip /mnt/software/IMG/FaccOS\ SBB
     # copy hmi image file to destination
-    - sudo cp /opt/pi-gen/deploy/*faccos-hmi.zip /mnt/software/IMG/faccos-hmi
+    - sudo cp /opt/pi-gen/deploy/*faccos-hmi.zip /mnt/software/IMG/FaccOS\ HMI
   only: 
     - master
