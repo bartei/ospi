@@ -7,7 +7,7 @@ mkdir -p /opt
 install -m 644 files/vpnserver.tar.gz "${ROOTFS_DIR}/opt/vpnserver.tar.gz"
 
 # Decompress the folder for the vpnserver software
-tar -xzvf "${ROOTFS_DIR}/opt/vpnserver.tar.gz"
+tar -xzf "${ROOTFS_DIR}/opt/vpnserver.tar.gz" --directory ${ROOTFS_DIR}/opt/
 
 # Make sure correct permissions are set for the vpn server executables
 chmod 755 "${ROOTFS_DIR}/opt/vpnserver/vpncmd"
