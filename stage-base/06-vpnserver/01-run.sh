@@ -1,22 +1,20 @@
 #!/bin/bash -e
 
-# Make sure the /opt folder exists
+log "Install Vpnserver Code"
 mkdir -p /opt
-
-# Install Vpnserver Code
 install -m 644 files/vpnserver.tar.gz "${ROOTFS_DIR}/opt/vpnserver.tar.gz"
 
-# Decompress the folder for the vpnserver software
+log "Decompress the folder for the vpnserver software"
 tar -xzf "${ROOTFS_DIR}/opt/vpnserver.tar.gz" --directory ${ROOTFS_DIR}/opt/
 
-# Make sure correct permissions are set for the vpn server executables
+log "Make sure correct permissions are set for the vpn server executables"
 chmod 755 "${ROOTFS_DIR}/opt/vpnserver/vpncmd"
 chmod 755 "${ROOTFS_DIR}/opt/vpnserver/vpnserver"
 
-# Install Vpnserver Systemd Service
+log "Install Vpnserver Systemd Service"
 install -m 644 files/softether-vpn.service "${ROOTFS_DIR}/etc/systemd/system/softether-vpn.service"
 
-# Enable the vpnserver systemd service in the chroot system
+log "Enable the vpnserver systemd service in the chroot system"
 on_chroot << EOF
 systemctl enable softether-vpn
 EOF
