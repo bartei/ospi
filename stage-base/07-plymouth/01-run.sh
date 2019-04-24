@@ -4,7 +4,7 @@
 install -m 644 files/cmdline.txt "${ROOTFS_DIR}/boot/cmdline.txt"
 
 # Create the theme directory
-mkdir -p /usr/share/plymouth/themes/faccos
+mkdir -p "${ROOTFS_DIR}/usr/share/plymouth/themes/faccos"
 
 # Install the theme files into the new directory
 install -m 644 files/facco-splash.png "${ROOTFS_DIR}/usr/share/plymouth/themes/facco-splash.png"
