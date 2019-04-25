@@ -5,6 +5,9 @@ on_chroot <<EOF
 apt-get autoremove --purge -yy dhcpcd5 firmware-atheros firmware-libertas firmware-realtek raspberrypi-net-mods
 EOF
 
+# removed old configuration files for dhcpcd
+rm -rf "${ROOTFS_DIR}/etc/systemd/system/dhcpcd.service.d"
+
 # change hosts file
 install -m 644 files/hosts "${ROOTFS_DIR}/etc/hosts"
 
