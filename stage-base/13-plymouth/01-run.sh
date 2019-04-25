@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
-log "Install the modified cmdline.txt which disables the raspberry logos and uses the splash in quiet mode"
-install -m 644 files/cmdline.txt "${ROOTFS_DIR}/boot/cmdline.txt"
+log "Adding necessary cmd only for splash screen"
+echo -n " quiet splash logo.nologo " >> "${ROOTFS_DIR}/boot/cmdline.txt"
 
 log "Create the theme directory"
 mkdir -p "${ROOTFS_DIR}/usr/share/plymouth/themes/faccos"

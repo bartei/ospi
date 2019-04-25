@@ -1,1 +1,0 @@
-dwc_otg.lpm_enable=0 console=tty1 cgroup_enable=memory cgroup_memory=1 root=/dev/mmcblk0p2 rootfstype=ext4 init=/sbin/overlayroot.sh elevator=deadline fsck.repair=yes rootwait quiet splash logo.nologo plymouth.ignore-serial-consoles ipv6.disable=1
