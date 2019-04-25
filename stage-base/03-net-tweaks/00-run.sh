@@ -5,6 +5,9 @@ on_chroot <<EOF
 apt-get autoremove --purge -yy dhcpcd5 firmware-atheros firmware-libertas firmware-realtek raspberrypi-net-mods
 EOF
 
+# change hosts file
+install -m 644 files/hosts "${ROOTFS_DIR}/etc/hosts"
+
 # change hostname file with dummy placeholder
 install -m 644 files/hostname "${ROOTFS_DIR}/etc/hostname"
 
