@@ -2,11 +2,7 @@
 
 # removing some stock net apt packages
 on_chroot <<EOF
-apt-get autoremove --purge dhcpcd5
-apt-get autoremove --purge firmware-atheros
-apt-get autoremove --purge firmware-libertas
-apt-get autoremove --purge firmware-realtek
-apt-get autoremove --purge raspberrypi-net-mods
+apt-get autoremove --purge -yy dhcpcd5 firmware-atheros firmware-libertas firmware-realtek raspberrypi-net-mods
 EOF
 
 # change hostname file with dummy placeholder

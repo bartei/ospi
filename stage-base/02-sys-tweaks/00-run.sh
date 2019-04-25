@@ -2,7 +2,7 @@
 
 # remove unused system stock packages
 on_chroot <<EOF
-apt-get autoremove --purge dphys-swapfile
+apt-get autoremove --purge -yy dphys-swapfile
 EOF
 
 # provide a more detailed login prompt
