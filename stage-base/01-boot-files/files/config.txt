@@ -25,8 +25,12 @@
 #hdmi_force_hotplug=1
 
 # uncomment to force a specific HDMI mode (this will force VGA)
-#hdmi_group=1
-#hdmi_mode=1
+#hdmi_group=2
+#hdmi_mode=87
+
+# Stefano Bertelli - March 2019
+# Uncomment this line to force the default resolution used by the comfilepi
+# hdmi_cvt 800 480 60 6 0 0 0
 
 # uncomment to force a HDMI mode rather than DVI. This can make audio work in
 # DMT (computer monitor) modes
@@ -53,4 +57,9 @@
 # Additional overlays and parameters are documented /boot/overlays/README
 
 # Enable audio (loads snd_bcm2835)
-dtparam=audio=on
+#dtparam=audio=on
+
+# Stefano Bertelli - March 2019
+# Disable UART on Bluetooth for PL011 and use GPIO pins
+dtoverlay=pi3-disable-bt
+enable_uart=1

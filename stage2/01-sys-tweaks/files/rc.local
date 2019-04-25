@@ -14,7 +14,6 @@
 # Print the IP address
 _IP=$(hostname -I) || true
 if [ "$_IP" ]; then
-  printf "Welcome to the FaccOS Operating System for IoT\n"
   printf "My IP address is %s\n" "$_IP"
 fi
 

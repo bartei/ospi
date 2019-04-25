@@ -3,14 +3,15 @@ console-setup keyboard-configuration debconf-utils parted unzip
 build-essential manpages-dev python bash-completion gdb pkg-config
 python-rpi.gpio v4l-utils
 avahi-daemon
-avahi-utils
 lua5.1
 luajit
 hardlink ca-certificates curl
 fake-hwclock nfs-common usbutils
 libraspberrypi-dev libraspberrypi-doc libfreetype6-dev
 dosfstools
+dphys-swapfile
 raspberrypi-sys-mods
+pi-bluetooth
 apt-listchanges
 usb-modeswitch
 apt-transport-https
@@ -23,7 +24,3 @@ man-db
 policykit-1
 ssh-import-id
 rng-tools
-mc
-git
-python3
-dos2unix
