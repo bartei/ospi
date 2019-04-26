@@ -15,13 +15,17 @@ build_images:
     - sudo apt-get update  
     # install dependencies
     - sudo apt-get -yy install git vim parted debootstrap zerofree zip dosfstools bsdtar libcap2-bin rsync grep udev xz-utils curl xxd file kmod quilt qemu-user-static
-    # build sbb image using variables 
-    - sudo ./build.sh -c build.conf
+    # generate image for vpn
+    - sudo ./build.sh -c vpn.conf
     # copy vpn image file to destination
     - sudo cp /opt/pi-gen/deploy/*faccos-vpn.zip /mnt/software/IMG/FaccOS\ VPN
-    # copy sbb image file to destination
+    # generate image for sbb
+    - sudo ./build.sh -c sbb.conf
+    # copy vpn image file to destination
     - sudo cp /opt/pi-gen/deploy/*faccos-sbb.zip /mnt/software/IMG/FaccOS\ SBB
-    # copy hmi image file to destination
+    # generate image for hmi
+    - sudo ./build.sh -c hmi.conf
+    # copy vpn image file to destination
     - sudo cp /opt/pi-gen/deploy/*faccos-hmi.zip /mnt/software/IMG/FaccOS\ HMI
   only: 
     - master
