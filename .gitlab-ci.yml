@@ -4,10 +4,6 @@ stages:
 build_images:
   stage: build_images  
   script: 
-    # killing build.sh process if it is executing
-    - "sudo kill $(ps aux | grep '[b]uild.sh' | awk '{print $2}') || :"
-    # umounting partitions in case last build failed
-    - "sudo umount --recursive /opt/pi-gen || :"
     # make sure corect folders exist
     - sudo mkdir -p /opt/pi-gen/
     # cleaning up old working files built by root on previous ci runs
@@ -31,6 +27,11 @@ build_images:
     - sudo ./build.sh -c hmi.conf
     # copy hmi image file to destination
     - sudo cp /opt/pi-gen/deploy/*faccos-hmi.zip /mnt/software/IMG/FaccOS\ HMI
+  after_script:
+    # killing build.sh process if it is executing
+    - "sudo kill $(ps aux | grep '[b]uild.sh' | awk '{print $2}') || :"
+    # umounting partitions in case last build failed
+    - "sudo umount --recursive /opt/pi-gen || :"
   only: 
     - master
     
