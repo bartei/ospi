@@ -8,9 +8,9 @@ build_images:
     - "sudo kill $(ps aux | grep '[b]uild.sh' | awk '{print $2}') || :"
     # umounting partitions in case last build failed
     - "sudo umount /opt/pi-gen/work/stage0/rootfs/sys || :"
-    - "sudo umount /opt/pi-gen/work/stage0/rootfs/proc 2> || :"
-    - "sudo umount /opt/pi-gen/work/stage0/rootfs/dev/pts 2> || :"
-    - "sudo umount /opt/pi-gen/work/stage0/rootfs/dev 2> || :"
+    - "sudo umount /opt/pi-gen/work/stage0/rootfs/proc || :"
+    - "sudo umount /opt/pi-gen/work/stage0/rootfs/dev/pts || :"
+    - "sudo umount /opt/pi-gen/work/stage0/rootfs/dev || :"
     # make sure corect folders exist
     - sudo mkdir -p /opt/pi-gen/
     # cleaning up old working files built by root on previous ci runs
