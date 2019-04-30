@@ -34,4 +34,3 @@ build_images:
     - "sudo umount --recursive /opt/pi-gen/work/{stage1,stage0,stage2,stage-base,stage-sbb,stage-hmi}/rootfs/{dev,proc,sys} || :"
   only: 
     - master
-    
