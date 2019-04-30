@@ -29,10 +29,12 @@ build_vpn:
     - sudo ./build.sh -c vpn.conf
     # copy vpn image file to destination
     - sudo cp /opt/pi-gen/deploy/*faccos-vpn.zip /mnt/software/IMG/FaccOS\ VPN
-  except:
+  only:
     changes:
-      - stage-sbb/**/*
-      - stage-hmi/**/*
+      - stage0/**/*
+      - stage1/**/*
+      - stage2/**/*
+      - stage-base/**/*
     refs:
       - master
 
@@ -43,9 +45,14 @@ build_sbb:
     - sudo ./build.sh -c sbb.conf
     # copy vpn image file to destination
     - sudo cp /opt/pi-gen/deploy/*faccos-sbb.zip /mnt/software/IMG/FaccOS\ SBB
-  except:
+  only:
     changes:
-      - stage-hmi/**/*
+      - stage0/**/*
+      - stage1/**/*
+      - stage2/**/*
+      - stage-base/**/*
+      - stage-sbb/**/*
+
     refs:
       - master
 
@@ -56,9 +63,13 @@ build_hmi:
     - sudo ./build.sh -c hmi.conf
     # copy hmi image file to destination
     - sudo cp /opt/pi-gen/deploy/*faccos-hmi.zip /mnt/software/IMG/FaccOS\ HMI
-  except:
+  only:
     changes:
-      - stage-sbb/**/*
+      - stage0/**/*
+      - stage1/**/*
+      - stage2/**/*
+      - stage-base/**/*
+      - stage-hmi/**/*
     refs:
       - master
 
