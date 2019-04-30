@@ -5,12 +5,12 @@ build_images:
   stage: build_images  
   script: 
     # killing build.sh process if it is executing
-    - sudo kill $(ps aux | grep '[b]uild.sh' | awk '{print $2}') 2> /dev/null
+    - sudo kill $(ps aux | grep '[b]uild.sh' | awk '{print $2}') ; exit 0
     # umounting partitions in case last build failed
-    - sudo umount /opt/pi-gen/work/stage0/rootfs/sys 2> /dev/null
-    - sudo umount /opt/pi-gen/work/stage0/rootfs/proc 2> /dev/null
-    - sudo umount /opt/pi-gen/work/stage0/rootfs/dev/pts 2> /dev/null
-    - sudo umount /opt/pi-gen/work/stage0/rootfs/dev 2> /dev/null
+    - sudo umount /opt/pi-gen/work/stage0/rootfs/sys ; exit 0
+    - sudo umount /opt/pi-gen/work/stage0/rootfs/proc 2> ; exit 0
+    - sudo umount /opt/pi-gen/work/stage0/rootfs/dev/pts 2> ; exit 0
+    - sudo umount /opt/pi-gen/work/stage0/rootfs/dev 2> ; exit 0
     # make sure corect folders exist
     - sudo mkdir -p /opt/pi-gen/
     # cleaning up old working files built by root on previous ci runs
