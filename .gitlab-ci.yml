@@ -30,14 +30,13 @@ build_vpn:
     # copy vpn image file to destination
     - sudo cp /opt/pi-gen/deploy/*faccos-vpn.zip /mnt/software/IMG/FaccOS\ VPN
   only:
-    changes:
-      - docker-compose.yml
-      - stage0/**/*
-      - stage1/**/*
-      - stage2/**/*
-      - stage-base/**/*
-    refs:
-      - master
+    - master
+  # except:
+  #   changes:
+  #     - stage-hmi/**/*
+  #     - stage-sbb/**/*
+  #   refs:
+  #     - master
 
 build_sbb:
   stage: build_sbb
@@ -47,16 +46,12 @@ build_sbb:
     # copy vpn image file to destination
     - sudo cp /opt/pi-gen/deploy/*faccos-sbb.zip /mnt/software/IMG/FaccOS\ SBB
   only:
-    changes:
-      - docker-compose.yml
-      - stage0/**/*
-      - stage1/**/*
-      - stage2/**/*
-      - stage-base/**/*
-      - stage-sbb/**/*
-
-    refs:
-      - master
+    - master
+  # except:
+  #   changes:
+  #     - stage-hmi/**/*
+  #   refs:
+  #     - master
 
 build_hmi:
   stage: build_hmi
@@ -66,15 +61,12 @@ build_hmi:
     # copy hmi image file to destination
     - sudo cp /opt/pi-gen/deploy/*faccos-hmi.zip /mnt/software/IMG/FaccOS\ HMI
   only:
-    changes:
-      - docker-compose.yml
-      - stage0/**/*
-      - stage1/**/*
-      - stage2/**/*
-      - stage-base/**/*
-      - stage-hmi/**/*
-    refs:
-      - master
+    - master
+  # except:
+  #   changes:
+  #     - stage-sbb/**/*
+  #   refs:
+  #     - master
 
 clean_up:
   stage: clean_up
