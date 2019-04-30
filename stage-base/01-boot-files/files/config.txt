@@ -63,3 +63,6 @@
 # Disable UART on Bluetooth for PL011 and use GPIO pins
 dtoverlay=pi3-disable-bt
 enable_uart=1
+
+# disable boot rainbow
+disable_splash=1
