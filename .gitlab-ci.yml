@@ -5,7 +5,7 @@ build_images:
   stage: build_images  
   script: 
     # killing build.sh process if it is executing
-    - 'sudo kill $(ps aux | grep '[b]uild.sh' | awk '{print $2}') || :"
+    - "sudo kill $(ps aux | grep '[b]uild.sh' | awk '{print $2}') || :"
     # umounting partitions in case last build failed
     - "sudo umount /opt/pi-gen/work/stage0/rootfs/sys || :"
     - "sudo umount /opt/pi-gen/work/stage0/rootfs/proc 2> || :"
