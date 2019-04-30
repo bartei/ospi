@@ -1,8 +1,12 @@
 stages:
-  - build_images
+  - init
+  - build_vpn
+  - build_hmi
+  - build_sbb
+  - clean_up
 
-build_images:
-  stage: build_images  
+init:
+  stage: init  
   script: 
     # make sure corect folders exist
     - sudo mkdir -p /opt/pi-gen/
@@ -15,22 +19,54 @@ build_images:
     - sudo apt-get update  
     # install dependencies
     - sudo apt-get -yy install git vim parted debootstrap zerofree zip dosfstools bsdtar libcap2-bin rsync grep udev xz-utils curl xxd file kmod quilt qemu-user-static
+  only: 
+    - master
+
+build_vpn:
+  stage: build_vpn
+  script:
     # generate image for vpn
     - sudo ./build.sh -c vpn.conf
     # copy vpn image file to destination
     - sudo cp /opt/pi-gen/deploy/*faccos-vpn.zip /mnt/software/IMG/FaccOS\ VPN
+  except:
+    changes:
+      - stage-sbb/**/*
+      - stage-hmi/**/*
+    refs:
+      - master
+
+build_sbb:
+  stage: build_sbb
+  script:
     # generate image for sbb
     - sudo ./build.sh -c sbb.conf
     # copy vpn image file to destination
     - sudo cp /opt/pi-gen/deploy/*faccos-sbb.zip /mnt/software/IMG/FaccOS\ SBB
+  except:
+    changes:
+      - stage-hmi/**/*
+    refs:
+      - master
+
+build_hmi:
+  stage: build_hmi
+  script:
     # generate image for hmi
     - sudo ./build.sh -c hmi.conf
     # copy hmi image file to destination
     - sudo cp /opt/pi-gen/deploy/*faccos-hmi.zip /mnt/software/IMG/FaccOS\ HMI
-  after_script:
+  except:
+    changes:
+      - stage-sbb/**/*
+    refs:
+      - master
+
+clean_up:
+  stage: clean_up
+  script:
     # killing build.sh process if it is executing
     - "sudo kill $(ps aux | grep '[b]uild.sh' | awk '{print $2}') || :"
     # umounting partitions in case last build failed
     - "sudo umount --recursive /opt/pi-gen/work/{stage1,stage0,stage2,stage-base,stage-sbb,stage-hmi}/rootfs/{dev,proc,sys} || :"
-  only: 
-    - master
+  when: always
