@@ -1,0 +1,8 @@
+[Unit]
+Description=RTC configuration for MCP79410
+
+[Service]
+ExecStart=/usr/sbin/configrtc.sh
+
+[Install]
+WantedBy=multi-user.target
