@@ -1,4 +1,4 @@
 # remove base user from sudo group
 on_chroot <<EOF
-gpasswd -d egg sudo
+deluser $FIRST_USER_NAME sudo
 EOF
