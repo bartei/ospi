@@ -1,0 +1,1 @@
+[ "$(tty)" = "/dev/tty1" ] && exec startx > profile.log 2> /dev/null
