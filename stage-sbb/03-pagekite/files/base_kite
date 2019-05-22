@@ -3,3 +3,4 @@ service_on=http-8000:placeholder.il.faccousa.net:localhost:8000:buymoreeggs
 service_on=http-8086:placeholder.il.faccousa.net:localhost:8086:buymoreeggs
 service_on=raw-2200:placeholder.il.faccousa.net:localhost:22:buymoreeggs
 service_on=raw-5000:placeholder.il.faccousa.net:localhost:5555:buymoreeggs
+service_cfg=placeholder.il.faccousa.net/8000:insecure:True
