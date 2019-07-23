@@ -3,4 +3,5 @@ proc            /proc           proc    defaults          0       0
 /dev/mmcblk0p2  /               ext4    defaults,noatime  0       1
 /dev/mmcblk0p4  /opt            ext4    defaults,noatime  0       1
 
-tmpfs           /home           tmpfs   defaults,noatime,nosuid,nodev,noexec,mode=1777,size=128M 0 0
+tmpfs           /home/PLACEHOLDER_BASE_USER/.config/chromium       tmpfs   defaults,noatime,nosuid,nodev,noexec,mode=1777,size=32M 0 0
+tmpfs           /home/PLACEHOLDER_BASE_USER/.cache/chromium        tmpfs   defaults,noatime,nosuid,nodev,noexec,mode=1777,size=32M 0 0
