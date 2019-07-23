@@ -12,6 +12,11 @@
 #hdmi_cvt 1024 768 60 6 0 0 0
 ## ---- END UNCOMMENT ----
 
+## The following section shall be enabled for the 7" Comfile PI
+## ---- UNCOMMENT FROM NEXT LINE ----
+# hdmi_cvt 800 480 60 6 0 0 0 ---
+## ---- END UNCOMMENT ----
+
 # Additional overlays and parameters are documented /boot/overlays/README
 dtparam=i2c_arm=on
 dtparam=spi=on
