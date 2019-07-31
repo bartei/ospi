@@ -49,7 +49,12 @@ if __name__ == '__main__':
     print("Creating temporary folders")
     os.makedirs("/opt/1", exist_ok=True)
     os.makedirs("/opt/2", exist_ok=True)
-    os.unlink('/opt/new.sqfs')
+
+    try:
+        if os.path.exists('/opt/new.sqfs'):
+            os.unlink('/opt/new.sqfs')
+    except Exception as e:
+        print("Error: {}".format(e.__str__()))
 
     print("Generating image for changes")
     try:
