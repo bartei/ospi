@@ -54,25 +54,22 @@ pivot_root . mnt
 exec chroot . sh -c "$(cat <<END
 # move ro and rw mounts to the new root
 
-echo "Moving /mnt/mnt/lower"
+echo "Moving mountpoints..."
 mount --move /mnt/mnt/lower /ro
 if [ $? -ne 0 ]; then
     echo "ERROR: could not move ro-root into newroot"
 fi
 
-echo "Moving /mnt/mnt/rw"
 mount --move /mnt/mnt/rw /rw
 if [ $? -ne 0 ]; then
     echo "ERROR: could not move rw mount into newroot"
 fi
 
-echo "Moving /mnt/mnt/persist"
 mount --move /mnt/mnt/persist /persist
 if [ $? -ne 0 ]; then
     echo "ERROR: could not move persist mount into newroot"
 fi
 
-echo "Moving /mnt/mnt/squash"
 mount --move /mnt/mnt/squash /squash
 if [ $? -ne 0 ]; then
     echo "ERROR: count not move squash mount into newroot"

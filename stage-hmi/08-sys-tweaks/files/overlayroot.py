@@ -1,5 +1,5 @@
 #  Read-only Root-FS for Raspian using overlayfs
-#  Version 2.0
+#  Version 2.1
 #
 #  Copyright (c) 2019 Stefano Bertelli
 #
@@ -45,9 +45,38 @@
 #  entry from the cmdline.txt file and reboot, make the changes, add the init= entry and reboot once more.
 
 import subprocess
+import logging
 import os
 
-import logging
+from hashlib import md5
+from operator import itemgetter
+
+
+
+copyright_text = """
+Read-only Overlay Squash
+Version 2.1
+
+Copyright (c) 2019 Stefano Bertelli
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
 
 
 def make_folders(folders_list):
@@ -59,46 +88,108 @@ def make_folders(folders_list):
             log.error("Error: {}".format(err.__str__()))
 
 
+def md5sum(filename):
+    md5_hash = md5()
+    with open(filename, "rb") as f:
+        for chunk in iter(lambda: f.read(128 * md5_hash.block_size), b""):
+            md5_hash.update(chunk)
+    return md5_hash.hexdigest()
+
+
+def sort_dict_by_key(iterable, key, reverse=False):
+    return sorted(iterable, key=itemgetter(key), reverse=reverse)
+
+
+def get_available_sqfs(path):
+    # Produce a list of available sqfs
+    available_sqfs = []
+    persist_folder = path
+
+    for item in os.listdir(persist_folder):
+        full_path = os.path.join(persist_folder, item)
+        base, ext = os.path.splitext(full_path)
+
+        if ext != '.sqfs':
+            continue
+
+        # check if we have a checksum for the current file
+        checksum_path = "{}.md5".format(base)
+        if not os.path.exists(checksum_path):
+            continue
+
+        original_checksum = open(checksum_path).read()
+        current_checksum = md5sum(full_path)
+
+        if original_checksum != current_checksum:
+            log.error("Checksum mismatch for squashfs: {}".format(full_path))
+            log.error("ORIG MD5: {}".format(original_checksum))
+            log.error("CURR MD5: {}".format(current_checksum))
+            continue
+
+        available_sqfs.append({
+            'filename': full_path,
+            'timestamp': os.path.getctime(full_path),
+            'size': os.path.getsize(full_path),
+            'checksum': current_checksum
+        })
+
+    return available_sqfs
+
+
 if __name__ == '__main__':
     try:
-        print("Mounting proc filesystem in /proc")
+        print(copyright_text)
+        print("Mounting proc...")
         result = subprocess.call(['/bin/mount', '-t', 'proc', 'proc', '/proc'])
-        print("Result: {}".format(result))
     except Exception as e:
         print("Error mount proc filesystem")
         print(e)
 
     try:
-        print("Create a writable fs to then create our mountpoints")
+        print("Mounting mnt...")
         result = subprocess.call(['/bin/mount', '-t', 'tmpfs', 'inittemp', '/mnt'])
-        print("Result: {}".format(result))
     except Exception as e:
         print("Error creating temporary filesystem for /mnt")
         print(e)
 
-    print("Create the required directories")
+    print("Create directory trees...")
     os.makedirs("/mnt/lower")
     os.makedirs("/mnt/rw")
     os.makedirs("/mnt/persist")
     os.makedirs("/mnt/squash")
 
     try:
-        print("Mount the tmpfs for resiliency")
-        result = subprocess.call(['/bin/mount', '-t', 'tmpfs', '-o', 'defaults,noatime,size=256M', 'tmpfs', '/mnt/rw'])
-        print("Result: {}".format(result))
+        print("Mounting mnt/rw...")
+        result = subprocess.call([
+            '/bin/mount',
+            '-t',
+            'tmpfs',
+            '-o',
+            'defaults,noatime,size=256M',
+            'tmpfs',
+            '/mnt/rw'
+        ])
     except Exception as e:
         print("Error mounting the tmpfs")
         print(e)
 
     try:
-        print("Mount the squashfs storage volume: /mnt/persist")
-        result = subprocess.call(['/bin/mount', '-t', 'ext4', '-o', 'defaults,noatime', '/dev/mmcblk0p3', '/mnt/persist'])
+        print("Mounting mnt/persist...")
+        result = subprocess.call([
+            '/bin/mount',
+            '-t',
+            'ext4',
+            '-o',
+            'defaults,noatime',
+            '/dev/mmcblk0p3',
+            '/mnt/persist'
+        ])
     except Exception as e:
         print("Error mounting the squashfs storage filesystem")
         print(e)
 
     # Now that we have the persistent unit mounted we can use it to store the boot log for this function
-    logging.basicConfig(filename='/mnt/persist/overlay.log')
+    logging.basicConfig(filename='/mnt/persist/overlay.log', level=logging.DEBUG)
     log = logging.getLogger()
 
     log.info("Create the additional folders for the overlay mount")
@@ -140,22 +231,29 @@ if __name__ == '__main__':
             except Exception as e:
                 log.error("Error: {}".format(e.__str__()))
 
-    available_squash = os.listdir("/mnt/persist")
-    if 'latest.sqfs' in available_squash:
-        log.info("Found an available squashfs overlay in latest.sqfs, mounting")
+    # Produce a list of available sqfs
+    sqfs = get_available_sqfs("/mnt/persist")
+    latest_sqfs = None
+    if len(sqfs) > 0:
+        # Sort the list of sqfs descending by datetime
+        latest_sqfs = sort_dict_by_key(sqfs, 'timestamp', reverse=True)[0]
 
+    if latest_sqfs is not None:
+        # This detail is important, we want to display it at each boot
+        print("Mounting: {}".format(latest_sqfs['filename']))
+        log.info("Mounting: {}".format(latest_sqfs['filename']))
         try:
             result = subprocess.call([
                 '/bin/mount',
                 '-t',
                 'squashfs',
-                '/mnt/persist/latest.sqfs',
+                latest_sqfs['filename'],
                 '/mnt/squash'
             ])
         except Exception as e:
             log.error("Error: {}".format(e.__str__()))
-
     else:
+        print("FRESH START... Don't forget to feed your birds!")
         log.info("No squashes found in the system, mount a temporary filesystem instead")
         try:
             result = subprocess.call([
@@ -170,6 +268,7 @@ if __name__ == '__main__':
         except Exception as e:
             log.error("Error: {}".format(e.__str__()))
 
+    print('Mounting overlay...')
     log.info("Mounting overlay for root")
     try:
         result = subprocess.call([
@@ -191,3 +290,4 @@ if __name__ == '__main__':
         '/mnt/newroot/squash',
     ]
     make_folders(new_folders)
+    print('Ready for pivoting')
