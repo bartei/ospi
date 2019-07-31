@@ -18,15 +18,15 @@ build_images:
     # generate image for vpn
     - sudo ./build.sh -c vpn.conf
     # copy vpn image file to destination
-    - sudo cp /opt/pi-gen/deploy/*faccos-vpn.zip /mnt/software/IMG/$GIT_BRANCH_NAME/FaccOS\ VPN
+    - sudo cp /opt/pi-gen/deploy/*faccos-vpn.zip /mnt/software/IMG/$CI_COMMIT_REF_NAME/FaccOS\ VPN
     # generate image for sbb
     - sudo ./build.sh -c sbb.conf
     # copy vpn image file to destination
-    - sudo cp /opt/pi-gen/deploy/*faccos-sbb.zip /mnt/software/IMG/$GIT_BRANCH_NAME/FaccOS\ SBB
+    - sudo cp /opt/pi-gen/deploy/*faccos-sbb.zip /mnt/software/IMG/$CI_COMMIT_REF_NAME/FaccOS\ SBB
     # generate image for hmi
     - sudo ./build.sh -c hmi.conf
     # copy hmi image file to destination
-    - sudo cp /opt/pi-gen/deploy/*faccos-hmi.zip /mnt/software/IMG/$GIT_BRANCH_NAME/FaccOS\ HMI
+    - sudo cp /opt/pi-gen/deploy/*faccos-hmi.zip /mnt/software/IMG/$CI_COMMIT_REF_NAME/FaccOS\ HMI
   after_script:
     # killing build.sh process if it is executing
     - "sudo kill $(ps aux | grep '[b]uild.sh' | awk '{print $2}') || :"
