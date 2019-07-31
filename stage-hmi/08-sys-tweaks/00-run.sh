@@ -4,3 +4,4 @@
 install -m 755 files/overlayroot.sh "${ROOTFS_DIR}/sbin/overlayroot.sh"
 install -m 755 files/overlayroot.py "${ROOTFS_DIR}/sbin/overlayroot.py"
 install -m 755 files/snapshot "${ROOTFS_DIR}/sbin/snapshot"
+
