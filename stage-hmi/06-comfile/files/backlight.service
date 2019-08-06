@@ -1,0 +1,9 @@
+[Unit]
+Description=Turn on backlight for Comfile 15 inches
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/backlight.sh
+
+[Install]
+WantedBy=multi-user.targe
