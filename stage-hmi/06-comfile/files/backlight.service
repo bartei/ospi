@@ -6,4 +6,4 @@ Type=oneshot
 ExecStart=/sbin/backlight.sh
 
 [Install]
-WantedBy=multi-user.targe
+WantedBy=multi-user.target
