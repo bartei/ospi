@@ -1,0 +1,35 @@
+# For more options and information see
+# http://rpf.io/configtxt
+# Some settings may impact device functionality. See link above for details
+
+## FACCO Operating System Options
+
+## The following section shall be enabled for the 15" Comfile PI
+## ---- UNCOMMENT FROM NEXT LINE ----
+#hdmi_force_hotplug=1
+#hdmi_group=2
+#hdmi_mode=87
+#hdmi_cvt 1024 768 60 6 0 0 0
+## ---- END UNCOMMENT ----
+
+## The following section shall be enabled for the 7" Comfile PI
+## ---- UNCOMMENT FROM NEXT LINE ----
+# hdmi_cvt 800 480 60 6 0 0 0 ---
+## ---- END UNCOMMENT ----
+
+# Additional overlays and parameters are documented /boot/overlays/README
+dtparam=i2c_arm=on
+dtparam=spi=on
+dtpartm=uart0=on
+enable_uart=1
+dtoverlay=uart1,txd1_pin=32,rxd1_pin=33
+core_freq=250
+dtoverlay=pwm-2chan,pin=40,func=4,pin2=41,func2=4
+dtoverlay=i2c-rtc,ds3231
+
+# Enable audio (loads snd_bcm2835)
+dtparam=audio=on
+
+disable_splash=1
+avoid_warnings=1
+
