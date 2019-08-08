@@ -79,20 +79,27 @@ if __name__ == '__main__':
         print("Error: {}".format(e.__str__()))
     print(os.listdir("/opt/1"))
 
-    print("Mounting overlay filesystem to merge changes")
+    print("Creating new squash overlay fs with rsync")
     try:
         result = subprocess.call([
-            'mount',
-            '-t',
-            'overlay',
-            '-o',
-            'lowerdir=/opt/1:/squash',
-            'merged-changes',
-            '/opt/2'
+            'rsync',
+            '-aAXHvp',
+            '/squash/',
+            '/opt/2',
         ])
     except Exception as e:
         print("Error: {}".format(e.__str__()))
-    print(os.listdir("/opt/2"))
+
+    print("Creating new squash overlay fs with rsync")
+    try:
+        result = subprocess.call([
+            'rsync',
+            '-aAXHvp',
+            '/opt/1/',
+            '/opt/2',
+        ])
+    except Exception as e:
+        print("Error: {}".format(e.__str__()))
 
     print("Generating final merged squashfs file")
     base_name = datetime.datetime.now().isoformat()
@@ -108,10 +115,11 @@ if __name__ == '__main__':
     except Exception as e:
         print("Error: {}".format(e.__str__()))
 
-    print("Unmounting 2 Final Folder")
+    print("Removing 2 Final Folder")
     try:
         result = subprocess.call([
-            'umount',
+            'rm',
+            '-R',
             '/opt/2'
         ])
     except Exception as e:
