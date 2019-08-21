@@ -32,6 +32,6 @@ build_images:
     - "sudo kill $(ps aux | grep '[b]uild.sh' | awk '{print $2}') || :"
     # umounting partitions in case last build failed
     - "sudo umount --recursive /opt/pi-gen/work/{stage1,stage0,stage2,stage-base,stage-sbb,stage-hmi}/rootfs/{dev,proc,sys} || :"
-  only:
+  only: 
     - master
     - staging
