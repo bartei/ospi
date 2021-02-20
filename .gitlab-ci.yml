@@ -16,17 +16,10 @@ build_images:
     # install dependencies
     - apt-get -yy install git vim parted debootstrap zerofree zip dosfstools bsdtar libcap2-bin rsync grep udev xz-utils curl xxd file kmod quilt qemu-user-static
     # generate image for vpn
-    - ./build.sh -c vpn.conf
+    - ./build.sh -c base.conf
     # copy vpn image file to destination
-    - cp /opt/pi-gen/deploy/*faccos-vpn.zip /mnt/software/IMG/$CI_COMMIT_REF_NAME/FaccOS\ VPN
-    # generate image for sbb
-    - ./build.sh -c sbb.conf
-    # copy vpn image file to destination
-    - cp /opt/pi-gen/deploy/*faccos-sbb.zip /mnt/software/IMG/$CI_COMMIT_REF_NAME/FaccOS\ SBB
-    # generate image for hmi
-    - ./build.sh -c hmi.conf
-    # copy hmi image file to destination
-    - cp /opt/pi-gen/deploy/*faccos-hmi.zip /mnt/software/IMG/$CI_COMMIT_REF_NAME/FaccOS\ HMI
+    - cp /opt/pi-gen/deploy/*ospi.zip /mnt/software/IMG/$CI_COMMIT_REF_NAME/OSPI
+
   after_script:
     # killing build.sh process if it is executing
     - "kill $(ps aux | grep '[b]uild.sh' | awk '{print $2}') || :"

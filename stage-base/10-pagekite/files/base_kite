@@ -1,3 +1,0 @@
-frontend=chicago.il.faccousa.net:8080
-service_on=raw-2200:placeholder.il.faccousa.net:localhost:22:buymoreeggs
-service_on=raw-5000:placeholder.il.faccousa.net:localhost:5555:buymoreeggs
