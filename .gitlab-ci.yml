@@ -18,7 +18,7 @@ build_images:
     # generate image for vpn
     - ./build.sh -c base.conf
     # copy vpn image file to destination
-    - cp /opt/pi-gen/deploy/*ospi.zip /mnt/software/IMG/$CI_COMMIT_REF_NAME/OSPI
+    - cp /opt/pi-gen/deploy/*ospi-base.zip /mnt/software/IMG/$CI_COMMIT_REF_NAME/OSPI
 
   after_script:
     # killing build.sh process if it is executing
