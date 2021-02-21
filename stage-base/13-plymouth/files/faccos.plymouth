@@ -1,8 +1,0 @@
-[Plymouth Theme]
-Name=faccos
-Description=Faccos Splash
-ModuleName=script
-
-[script]
-ImageDir=/usr/share/plymouth/themes/faccos
-ScriptFile=/usr/share/plymouth/themes/faccos/faccos.script

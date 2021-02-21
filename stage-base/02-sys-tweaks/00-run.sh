@@ -14,9 +14,3 @@ install -m 644 files/getty@.service "${ROOTFS_DIR}/lib/systemd/system/getty@.ser
 # give message of the current version of the OS when connecting with SSH
 install -m 644 files/motd "${ROOTFS_DIR}/etc/motd"
 install -m 755 files/20-issue "${ROOTFS_DIR}/etc/update-motd.d/20-issue"
-
-# remove stock auto resize 
-rm -rf "${ROOTFS_DIR}/etc/init.d/resize2fs_once"
-
-# add shell script for mounting overlay fs
-install -m 755 files/overlayroot.sh "${ROOTFS_DIR}/sbin/overlayroot.sh"

@@ -1,7 +1,7 @@
 screen_width = Window.GetWidth();
 screen_height = Window.GetHeight();
 
-theme_image = Image("facco-splash.png");
+theme_image = Image("splash.png");
 image_width = theme_image.GetWidth();
 image_height = theme_image.GetHeight();
 
