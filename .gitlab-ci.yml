@@ -8,9 +8,9 @@ build_images:
     - mkdir -p /opt/pi-gen/
     # cleaning up old working files built by root on previous ci runs
     # comment this line for faster inage building
-    - rm -fR /opt/pi-gen/work/*
+#    - rm -fR /opt/pi-gen/work/*
     # cleaning up old deploying files built by root on previous ci runs
-    - rm -fR /opt/pi-gen/deploy/*
+#    - rm -fR /opt/pi-gen/deploy/*
     # update apt repos
     - apt-get update  
     # install dependencies

@@ -49,7 +49,7 @@
 # Uncomment some or all of these to enable the optional hardware interfaces
 dtparam=i2c_arm=on
 #dtparam=i2s=on
-#dtparam=spi=on
+dtparam=spi=on
 
 # Uncomment this to enable the lirc-rpi module
 #dtoverlay=lirc-rpi
