@@ -1,0 +1,24 @@
+[connection]
+id=wifi
+uuid=319f2d8e-3ce7-4e47-b6eb-fabb0aa69f68
+type=wifi
+
+[ipv6]
+method=ignore
+
+[wifi]
+mode=infrastructure
+ssid=[wifi_network_name_here]
+
+[wifi-security]
+auth-alg=open
+key-mgmt=wpa-psk
+psk=[wifi_network_pass_here]
+
+[ipv4]
+# available values: auto, manual, ignore
+method=ignore
+
+# uncomment when using method=manual
+# address1=192.168.0.100/24,192.168.0.1
+# dns=8.8.8.8;

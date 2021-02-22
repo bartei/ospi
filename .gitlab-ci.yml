@@ -2,30 +2,35 @@ stages:
   - build_images
 
 build_images:
-  stage: build_images  
-  script: 
-    # make sure corect folders exist
-    - mkdir -p /opt/pi-gen/
+  stage: build_images
+  environment:
+    WORK_DIR: /opt/work
+    DEPLOY_DIR: /opt/deploy
+    LOCALE_DEFAULT: en_US.UTF-8
+    TARGET_HOSTNAME: ospi
+    KEYBOARD_KEYMAP: us
+    KEYBOARD_LAYOUT: English (US)
+    TIMEZONE_DEFAULT: Etc/UTC
+    FIRST_USER_NAME: ospi
+    FIRST_USER_PASS: alpine
+    ENABLE_SSH: 1
+  script:
     # cleaning up old working files built by root on previous ci runs
     # comment this line for faster inage building
-#    - rm -fR /opt/pi-gen/work/*
+    # - rm -fR /opt/work/*
     # cleaning up old deploying files built by root on previous ci runs
-#    - rm -fR /opt/pi-gen/deploy/*
+    # - rm -fR /opt/pi-gen/deploy/*
     # update apt repos
     - apt-get update  
     # install dependencies
-    - apt-get -yy install git vim parted debootstrap zerofree zip dosfstools bsdtar libcap2-bin rsync grep udev xz-utils curl xxd file kmod quilt qemu-user-static
+    - apt-get -yy git install coreutils quilt parted qemu-user-static debootstrap zerofree zip \
+      dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc \
+      qemu-utils kpartx
     # generate image for vpn
-    - ./build.sh -c base.conf
-
-  after_script:
-    # killing build.sh process if it is executing
-    - "kill $(ps aux | grep '[b]uild.sh' | awk '{print $2}') || :"
-    # umounting partitions in case last build failed
-    - "umount --recursive /opt/pi-gen/work/{stage1,stage0,stage2,stage-base,stage-sbb,stage-hmi}/rootfs/{dev,proc,sys} || :"
+    - ./build.sh
   artifacts:
     paths:
-      - /opt/pi-get/deploy/*
+      - /opt/deploy/*
     expire_in: 52 week
   only:
     - master

@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=ospi
+Description=OSPI Splash
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/ospi
+ScriptFile=/usr/share/plymouth/themes/ospi/ospi.script
