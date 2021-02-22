@@ -3,7 +3,7 @@ stages:
 
 build_images:
   stage: build_images
-  environment:
+  variables:
     WORK_DIR: /opt/work
     DEPLOY_DIR: /opt/deploy
     LOCALE_DEFAULT: en_US.UTF-8
