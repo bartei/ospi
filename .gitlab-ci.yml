@@ -14,6 +14,7 @@ build_images:
     FIRST_USER_NAME: ospi
     FIRST_USER_PASS: alpine
     ENABLE_SSH: 1
+    IMG_NAME: ospi
   script:
     # cleaning up old working files built by root on previous ci runs
     # comment this line for faster inage building
