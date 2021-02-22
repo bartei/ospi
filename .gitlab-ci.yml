@@ -14,7 +14,7 @@ build_images:
     # install dependencies
     - apt-get -yy install git coreutils quilt parted debootstrap zerofree zip bsdtar libcap2-bin grep rsync xz-utils file git curl bc kpartx
     # generate image for vpn
-    - ./build-docker.sh config
+    - ./build-docker.sh -c config
   artifacts:
     paths:
       - /opt/deploy/*
