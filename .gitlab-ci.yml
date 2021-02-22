@@ -23,9 +23,8 @@ build_images:
     # update apt repos
     - apt-get update  
     # install dependencies
-    - apt-get -yy install git coreutils quilt parted qemu-user-static debootstrap zerofree zip \
-      dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc \
-      qemu-utils kpartx
+    - apt-get -yy install git coreutils quilt parted debootstrap zerofree zip \
+      dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc kpartx
     # generate image for vpn
     - ./build.sh
   artifacts:
