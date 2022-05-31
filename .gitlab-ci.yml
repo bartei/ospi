@@ -2,6 +2,7 @@ stages:
   - build_images
 
 build_images:
+  image: debian:bullseye
   stage: build_images
   script:
     # cleaning up old working files built by root on previous ci runs
