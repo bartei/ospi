@@ -8,7 +8,8 @@ build_images:
     # update apt repos
     - apt-get update  
     # install dependencies
-    - apt-get -yy install git coreutils quilt parted debootstrap zerofree zip libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc kpartx
+    - apt-get -yy install git coreutils quilt parted debootstrap zerofree zip libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc kpartx wget
+    - wget -O- get.docker.com | sh
     # Clean env
     - docker rm -v pigen_work
     # generate image for vpn
