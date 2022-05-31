@@ -2,7 +2,6 @@ stages:
   - build_images
 
 build_images:
-  image: debian:bullseye
   stage: build_images
   script:
     # update apt repos
