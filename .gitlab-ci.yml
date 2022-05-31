@@ -10,10 +10,11 @@ build_images:
     # install dependencies
     - apt-get -yy install git coreutils quilt parted debootstrap zerofree zip libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc kpartx wget
     - wget -O- get.docker.com | sh
+    - ./build.sh -c config
     # Clean env
-    - docker rm -v pigen_work
+#    - docker rm -v pigen_work
     # generate image for vpn
-    - ./build-docker.sh -c config
+#    - ./build-docker.sh -c config
   artifacts:
     paths:
       - /opt/deploy/*
