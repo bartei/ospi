@@ -5,15 +5,10 @@ build_images:
   image: debian:bullseye
   stage: build_images
   script:
-    # cleaning up old working files built by root on previous ci runs
-    # comment this line for faster inage building
-    # - rm -fR /opt/work/*
-    # cleaning up old deploying files built by root on previous ci runs
-    # - rm -fR /opt/pi-gen/deploy/*
     # update apt repos
     - apt-get update  
     # install dependencies
-    - apt-get -yy install git coreutils quilt parted debootstrap zerofree zip bsdtar libcap2-bin grep rsync xz-utils file git curl bc kpartx
+    - apt-get -yy install git coreutils quilt parted debootstrap zerofree zip libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc kpartx
     # Clean env
     - docker rm -v pigen_work
     # generate image for vpn
