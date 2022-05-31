@@ -8,31 +8,9 @@ build_images:
     # update apt repos
     - apt-get update  
     # install dependencies
-    - apt-get -yy \ 
-        install \
-        git \
-        coreutils \
-        quilt \ 
-        parted \
-        debootstrap \
-        zerofree \
-        zip \
-        libarchive-tools \
-        libcap2-bin \
-        grep \
-        rsync \
-        xz-utils \
-        file \
-        git \
-        curl \
-        bc \
-        kpartx \
-        wget
-        qemu-user-static \
-        dosfstools \
-        xxd \
-        kmod \
-        qemu-utils
+    - apt-get -yy install git coreutils quilt parted debootstrap zerofree zip libarchive-tools
+    - apt-get -yy install libcap2-bin grep rsync xz-utils file git curl bc kpartx wget
+    - apt-get -yy install qemu-user-static dosfstools xxd kmod qemu-utils
 #    - wget -O- get.docker.com | sh
     - ./build.sh -c config
     # Clean env
