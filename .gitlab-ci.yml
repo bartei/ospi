@@ -13,7 +13,7 @@ build_images:
     - sudo apt-get -yy install libcap2-bin grep rsync xz-utils file git curl bc kpartx wget
     - sudo apt-get -yy install qemu-user-static dosfstools xxd kmod qemu-utils
 #    - wget -O- get.docker.com | sh
-    - ./build.sh -c config
+    - sudo ./build.sh -c config
     # Clean env
 #    - docker rm -v pigen_work
     # generate image for vpn
