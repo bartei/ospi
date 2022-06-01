@@ -1,5 +1,6 @@
 stages:
   - build_buster
+  - build_bullseye
 
 build_buster:
   stage: build_buster
