@@ -3,6 +3,8 @@ stages:
 
 build_images:
   stage: build_images
+  tags:
+    - shell
   script:
     # update apt repos
     - apt-get update  
