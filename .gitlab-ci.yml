@@ -2,26 +2,6 @@ stages:
   - build_buster
   - build_bullseye
 
-build_buster:
-  stage: build_buster
-  tags:
-    - shell
-  script:
-    # update apt repos
-    - sudo apt-get update  
-    # install dependencies
-    - sudo apt-get -yy install git coreutils quilt parted debootstrap zerofree zip libarchive-tools
-    - sudo apt-get -yy install libcap2-bin grep rsync xz-utils file git curl bc kpartx wget
-    - sudo apt-get -yy install qemu-user-static dosfstools xxd kmod qemu-utils
-    - sudo ./build.sh -c config.buster
-  artifacts:
-    paths:
-      - /opt/deploy/buster/*
-    expire_in: 52 week
-  only:
-    - master
-    - staging
-
 build_bullseye:
   stage: build_bullseye
   tags:
