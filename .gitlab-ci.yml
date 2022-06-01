@@ -1,8 +1,8 @@
 stages:
-  - build_images
+  - build_buster
 
-build_images:
-  stage: build_images
+build_buster:
+  stage: build_buster
   tags:
     - shell
   script:
@@ -12,15 +12,30 @@ build_images:
     - sudo apt-get -yy install git coreutils quilt parted debootstrap zerofree zip libarchive-tools
     - sudo apt-get -yy install libcap2-bin grep rsync xz-utils file git curl bc kpartx wget
     - sudo apt-get -yy install qemu-user-static dosfstools xxd kmod qemu-utils
-#    - wget -O- get.docker.com | sh
-    - sudo ./build.sh -c config
-    # Clean env
-#    - docker rm -v pigen_work
-    # generate image for vpn
-#    - ./build-docker.sh -c config
+    - sudo ./build.sh -c config.buster
   artifacts:
     paths:
-      - /opt/deploy/*
+      - /opt/deploy/buster/*
+    expire_in: 52 week
+  only:
+    - master
+    - staging
+
+build_bullseye:
+  stage: build_bullseye
+  tags:
+    - shell
+  script:
+    # update apt repos
+    - sudo apt-get update
+    # install dependencies
+    - sudo apt-get -yy install git coreutils quilt parted debootstrap zerofree zip libarchive-tools
+    - sudo apt-get -yy install libcap2-bin grep rsync xz-utils file git curl bc kpartx wget
+    - sudo apt-get -yy install qemu-user-static dosfstools xxd kmod qemu-utils
+    - sudo ./build.sh -c config.bullseye
+  artifacts:
+    paths:
+      - /opt/deploy/bullseye/*
     expire_in: 52 week
   only:
     - master
