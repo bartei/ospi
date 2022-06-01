@@ -9,4 +9,4 @@ FIRST_USER_NAME=ospi
 FIRST_USER_PASS=alpine
 ENABLE_SSH=1
 IMG_NAME=ospi
-RELEASE=bullseys
+RELEASE=bullseye
