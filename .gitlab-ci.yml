@@ -7,12 +7,6 @@ build_bullseye:
   tags:
     - shell
   script:
-    # update apt repos
-    - sudo apt-get update
-    # install dependencies
-    - sudo apt-get -yy install git coreutils quilt parted debootstrap zerofree zip libarchive-tools
-    - sudo apt-get -yy install libcap2-bin grep rsync xz-utils file git curl bc kpartx wget
-    - sudo apt-get -yy install qemu-user-static dosfstools xxd kmod qemu-utils
     - sudo ./build-docker.sh -c config
   artifacts:
     paths:
