@@ -5,11 +5,7 @@ git
 policykit-1
 gvfs
 rfkill
-libwidevinecdm0
-gldriver-test
 fonts-droid-fallback
 fonts-liberation2
 obconf
 arandr
-libcamera-tools
-libcamera-apps
