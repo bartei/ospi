@@ -13,7 +13,7 @@ build_bullseye:
     - sudo apt-get -yy install git coreutils quilt parted debootstrap zerofree zip libarchive-tools
     - sudo apt-get -yy install libcap2-bin grep rsync xz-utils file git curl bc kpartx wget
     - sudo apt-get -yy install qemu-user-static dosfstools xxd kmod qemu-utils
-#    - sudo rm -R /opt/work
+    - sudo rm -R /opt/work
     - sudo ./build.sh -c config.bullseye
   artifacts:
     paths:
