@@ -7,7 +7,7 @@ build_bullseye:
   tags:
     - shell
   script:
-    - sudo ./build-docker.sh -c config
+    - CONTINUE=1 sudo ./build-docker.sh -c config
   artifacts:
     paths:
       - /opt/deploy/bullseye/*
