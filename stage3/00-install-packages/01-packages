@@ -1,18 +1,7 @@
-python3-tk
-python3-pgzero
-python3-serial
-debian-reference-en
-raspberrypi-net-mods raspberrypi-ui-mods
-python3-pip
-pypy
-tree
-libgl1-mesa-dri libgles1 libgles2-mesa xcompmgr
-python3-pigpio raspi-gpio python3-rpi.gpio
-python3-spidev
-python3-twython
-python3-smbus
-pprompt
-piwiz
-rp-prefapps
-libav-tools
-rpi-wayland
+xserver-xorg-video-fbdev xserver-xorg xinit xserver-xorg-video-fbturbo
+mousepad
+lxde lxtask menu-xdg
+zenity xdg-utils
+gvfs-backends gvfs-fuse
+lightdm gnome-themes-standard-data gnome-icon-theme
+gnome-keyring
