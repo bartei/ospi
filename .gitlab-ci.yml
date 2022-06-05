@@ -7,10 +7,8 @@ build_bullseye:
   tags:
     - shell
   script:
-    - env
     - echo DEPLOY_DIR=$CI_PROJECT_DIR/deploy >> config
-    - cat config
-#    - sudo ./build.sh -c config
+    - sudo ./build.sh -c config
   artifacts:
     paths:
       - $CI_PROJECT_DIR/deploy/*
