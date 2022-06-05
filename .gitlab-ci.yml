@@ -10,7 +10,7 @@ build_bullseye:
     - sudo ./build.sh -c config
   artifacts:
     paths:
-      - /opt/deploy/bullseye/*
+      - /opt/deploy/*
     expire_in: 52 week
   only:
     - master
