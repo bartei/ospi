@@ -1,4 +1,5 @@
 #!/bin/bash -e
+set -x
 
 if [ "${NO_PRERUN_QCOW2}" = "0" ]; then
 	IMG_FILE="${STAGE_WORK_DIR}/${IMG_FILENAME}${IMG_SUFFIX}.img"
