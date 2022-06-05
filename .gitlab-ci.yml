@@ -9,10 +9,11 @@ build_bullseye:
   script:
     - echo DEPLOY_DIR=$CI_PROJECT_DIR/deploy >> config
     - sudo ./build.sh -c config
-  artifacts:
-    paths:
-      - $CI_PROJECT_DIR/deploy/*
-    expire_in: 52 week
+    - sudo mkdir -p /mnt/registry
+    - sudo mount -t nfs 10.1.2.9:/shared/samba/Software /mnt/registry/
+    - sudo mkdir -p /mnt/registry/RASPBERRY/ospi
+    - sudo mv $CI_PROJECT_DIR/deploy/*.img /mnt/registry/RASPBERRY/ospi
+    - sudo umount /mnt/registry
   only:
     - master
     - staging
