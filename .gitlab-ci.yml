@@ -7,12 +7,12 @@ build_bullseye:
   tags:
     - shell
   script:
-    - echo DEPLOY_DIR=opt/deploy >> config
+    - echo DEPLOY_DIR=/opt/deploy >> config
     - sudo ./build.sh -c config
     - sudo mkdir -p /mnt/registry
     - sudo mount -t nfs 10.1.2.9:/shared/samba/Software /mnt/registry/
     - sudo mkdir -p /mnt/registry/RASPBERRY/ospi
-    - sudo mv opt/deploy/*.img /mnt/registry/RASPBERRY/ospi
+    - sudo mv /opt/deploy/*.img /mnt/registry/RASPBERRY/ospi
     - sudo umount /mnt/registry
     - rm -r /opt/deploy
   only:
