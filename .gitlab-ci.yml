@@ -14,7 +14,7 @@ build_bullseye:
     - sudo mkdir -p /mnt/registry/RASPBERRY/ospi
     - sudo cp /opt/deploy/* /mnt/registry/RASPBERRY/ospi
     - sudo umount /mnt/registry
-    - rm -r /opt/deploy
+    - sudo rm -r /opt/deploy
   only:
     - master
     - staging
