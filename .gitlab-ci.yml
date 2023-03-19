@@ -1,5 +1,4 @@
 stages:
-  - build_buster
   - build_bullseye
 
 build_bullseye:
@@ -15,6 +14,3 @@ build_bullseye:
     - sudo cp /opt/deploy/* /mnt/registry/RASPBERRY/ospi
     - sudo umount /mnt/registry
     - sudo rm -r /opt/deploy
-  only:
-    - master
-    - staging
