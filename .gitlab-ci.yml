@@ -6,8 +6,10 @@ build_bullseye:
   tags:
     - shell
   script:
-    - echo DEPLOY_DIR=/opt/deploy >> config
-    - sudo ./build.sh -c config
+    - sudo mkdir -p /opt/pi-gen/
+    - sudo rm -fR /opt/pi-gen/work/*
+    - sudo rm -fR /opt/pi-gen/deploy/*
+    - sudo ./build.sh -c base.conf
     - sudo mkdir -p /mnt/registry
     - sudo mount -t nfs 10.1.2.9:/shared/samba/Software /mnt/registry/
     - sudo mkdir -p /mnt/registry/RASPBERRY/ospi
