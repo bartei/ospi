@@ -27,6 +27,6 @@ build_images:
     paths:
       - /opt/pi-get/deploy/*
     expire_in: 52 week
-  only:
-    - master
-    - staging
+  # only:
+  #   - master
+  #   - staging
