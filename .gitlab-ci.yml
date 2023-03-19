@@ -1,35 +1,50 @@
 stages:
-  - build_images
+  - build_bullseye
 
-build_images:
-  stage: build_images
+build_bullseye:
+  stage: build_bullseye
   tags:
-  - shell
-  
-  script: 
-    # make sure corect folders exist
-    - mkdir -p /opt/pi-gen/
-    # cleaning up old working files built by root on previous ci runs
-    # comment this line for faster inage building
-#    - rm -fR /opt/pi-gen/work/*
-    # cleaning up old deploying files built by root on previous ci runs
-#    - rm -fR /opt/pi-gen/deploy/*
-    # update apt repos
-    - apt-get update  
-    # install dependencies
-    - apt-get -yy install git vim parted debootstrap zerofree zip dosfstools bsdtar libcap2-bin rsync grep udev xz-utils curl xxd file kmod quilt qemu-user-static
-    # generate image for vpn
-    - ./build.sh -c base.conf
+    - shell
+  script:
+    - echo DEPLOY_DIR=/opt/deploy >> config
+    - sudo ./build.sh -c config
+    - sudo mkdir -p /mnt/registry
+    - sudo mount -t nfs 10.1.2.9:/shared/samba/Software /mnt/registry/
+    - sudo mkdir -p /mnt/registry/RASPBERRY/ospi
+    - sudo cp /opt/deploy/* /mnt/registry/RASPBERRY/ospi
+    - sudo umount /mnt/registry
+    - sudo rm -r /opt/deploy
 
-  after_script:
-    # killing build.sh process if it is executing
-    - "kill $(ps aux | grep '[b]uild.sh' | awk '{print $2}') || :"
-    # umounting partitions in case last build failed
-    - "umount --recursive /opt/pi-gen/work/{stage1,stage0,stage2,stage-base,stage-sbb,stage-hmi}/rootfs/{dev,proc,sys} || :"
-  artifacts:
-    paths:
-      - /opt/pi-get/deploy/*
-    expire_in: 52 week
-  # only:
-  #   - master
-  #   - staging
+
+# build_images:
+#   stage: build_images
+#   tags:
+#   - shell
+  
+#   script: 
+#     # make sure corect folders exist
+#     - mkdir -p /opt/pi-gen/
+#     # cleaning up old working files built by root on previous ci runs
+#     # comment this line for faster inage building
+# #    - rm -fR /opt/pi-gen/work/*
+#     # cleaning up old deploying files built by root on previous ci runs
+# #    - rm -fR /opt/pi-gen/deploy/*
+#     # update apt repos
+#     - apt-get update  
+#     # install dependencies
+#     - apt-get -yy install git vim parted debootstrap zerofree zip dosfstools bsdtar libcap2-bin rsync grep udev xz-utils curl xxd file kmod quilt qemu-user-static
+#     # generate image for vpn
+#     - ./build.sh -c base.conf
+
+#   after_script:
+#     # killing build.sh process if it is executing
+#     - "kill $(ps aux | grep '[b]uild.sh' | awk '{print $2}') || :"
+#     # umounting partitions in case last build failed
+#     - "umount --recursive /opt/pi-gen/work/{stage1,stage0,stage2,stage-base,stage-sbb,stage-hmi}/rootfs/{dev,proc,sys} || :"
+#   artifacts:
+#     paths:
+#       - /opt/pi-get/deploy/*
+#     expire_in: 52 week
+#   # only:
+#   #   - master
+#   #   - staging
