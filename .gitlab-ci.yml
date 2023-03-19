@@ -2,7 +2,10 @@ stages:
   - build_images
 
 build_images:
-  stage: build_images  
+  stage: build_images
+  tags:
+  - shell
+  
   script: 
     # make sure corect folders exist
     - mkdir -p /opt/pi-gen/
