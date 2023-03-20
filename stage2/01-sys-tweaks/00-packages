@@ -1,7 +1,9 @@
 ssh less fbset sudo psmisc strace ed ncdu crda
-console-setup keyboard-configuration debconf-utils parted unzip
-build-essential manpages-dev python bash-completion gdb pkg-config
-python-rpi.gpio v4l-utils
+console-setup keyboard-configuration debconf-utils parted
+build-essential manpages-dev bash-completion gdb pkg-config
+python-is-python3
+python3-rpi.gpio v4l-utils
+python3-gpiozero
 avahi-daemon
 lua5.1
 luajit
@@ -14,7 +16,6 @@ raspberrypi-sys-mods
 pi-bluetooth
 apt-listchanges
 usb-modeswitch
-apt-transport-https
 libpam-chksshpwd
 rpi-update
 libmtp-runtime
@@ -24,3 +25,12 @@ man-db
 policykit-1
 ssh-import-id
 rng-tools
+ethtool
+ntfs-3g
+pciutils
+rpi-eeprom
+raspinfo
+udisks2
+unzip zip p7zip-full
+file
+kms++-utils

@@ -9,19 +9,21 @@ bootstrap(){
 
 	export http_proxy=${APT_PROXY}
 
-	if [ "$(dpkg --print-architecture)" !=  "armhf" ]; then
-		BOOTSTRAP_CMD=qemu-debootstrap
-	fi
-
-	BOOTSTRAP_ARGS+=(--arch armhf)
+	BOOTSTRAP_ARGS+=(--arch arm64)
+	BOOTSTRAP_ARGS+=(--include gnupg)
 	BOOTSTRAP_ARGS+=(--components "main,contrib,non-free")
-	BOOTSTRAP_ARGS+=(--keyring "${STAGE_DIR}/files/raspberrypi.gpg")
+	#BOOTSTRAP_ARGS+=(--keyring "${STAGE_DIR}/files/raspberrypi.gpg")
+	BOOTSTRAP_ARGS+=(--exclude=info)
+	BOOTSTRAP_ARGS+=(--include=ca-certificates)
 	BOOTSTRAP_ARGS+=("$@")
+	printf -v BOOTSTRAP_STR '%q ' "${BOOTSTRAP_ARGS[@]}"
 
-	capsh --drop=cap_setfcap -- "${BOOTSTRAP_CMD}" "${BOOTSTRAP_ARGS[@]}" || true
+	capsh $CAPSH_ARG -- -c "'${BOOTSTRAP_CMD}' $BOOTSTRAP_STR" || true
 
-	if [ -d "$2/debootstrap" ]; then
-		rmdir "$2/debootstrap"
+	if [ -d "$2/debootstrap" ] && ! rmdir "$2/debootstrap"; then
+		cp "$2/debootstrap/debootstrap.log" "${STAGE_WORK_DIR}"
+		log "bootstrap failed: please check ${STAGE_WORK_DIR}/debootstrap.log"
+		return 1
 	fi
 }
 export -f bootstrap
@@ -56,19 +58,15 @@ export -f unmount
 unmount_image(){
 	sync
 	sleep 1
-	local LOOP_DEVICES
-	LOOP_DEVICES=$(losetup --list | grep "$(basename "${1}")" | cut -f1 -d' ')
-	for LOOP_DEV in ${LOOP_DEVICES}; do
-		if [ -n "${LOOP_DEV}" ]; then
-			local MOUNTED_DIR
-			MOUNTED_DIR=$(mount | grep "$(basename "${LOOP_DEV}")" | head -n 1 | cut -f 3 -d ' ')
-			if [ -n "${MOUNTED_DIR}" ] && [ "${MOUNTED_DIR}" != "/" ]; then
-				unmount "$(dirname "${MOUNTED_DIR}")"
+	LOOP_DEVICE=$(losetup --list | grep "$1" | cut -f1 -d' ')
+	if [ -n "$LOOP_DEVICE" ]; then
+		for part in "$LOOP_DEVICE"p*; do
+			if DIR=$(findmnt -n -o target -S "$part"); then
+				unmount "$DIR"
 			fi
-			sleep 1
-			losetup -d "${LOOP_DEV}"
-		fi
-	done
+		done
+		losetup -d "$LOOP_DEVICE"
+	fi
 }
 export -f unmount_image
 
@@ -89,14 +87,11 @@ on_chroot() {
 		mount --bind /sys "${ROOTFS_DIR}/sys"
 	fi
 
-	capsh --drop=cap_setfcap "--chroot=${ROOTFS_DIR}/" -- -e "$@"
+	capsh $CAPSH_ARG "--chroot=${ROOTFS_DIR}/" -- -e "$@"
 }
 export -f on_chroot
 
 update_issue() {
-	local GIT_HASH
-	GIT_HASH=$(git rev-parse HEAD)
-	echo -e "${IMG_DATE}" > "${ROOTFS_DIR}/etc/rpi-issue"
+	echo -e "Raspberry Pi reference ${IMG_DATE}\nGenerated using ${PI_GEN}, ${PI_GEN_REPO}, ${GIT_HASH}, ${1}" > "${ROOTFS_DIR}/etc/rpi-issue"
 }
 export -f update_issue
-
