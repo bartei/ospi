@@ -18,8 +18,8 @@ install -m 644 files/hostname "${ROOTFS_DIR}/etc/hostname"
 # boot here it does not matter since they are still in the boot folder
 # these files will be then copied by network-manager-boot-keyfile.service
 mkdir -p "${ROOTFS_DIR}/boot/keyfiles"
-install -m 777 files/ethernet "${ROOTFS_DIR}/boot/keyfiles/ethernet"
-install -m 777 files/wifi "${ROOTFS_DIR}/boot/keyfiles/wifi"
+install -m 777 files/ethernet.nmconnection "${ROOTFS_DIR}/boot/keyfiles/ethernet"
+install -m 777 files/wifi.nmconnection "${ROOTFS_DIR}/boot/keyfiles/wifi"
 
 # add service to unbind/bind lan78xx driver
 # https://github.com/raspberrypi/firmware/issues/1100
@@ -32,6 +32,7 @@ install -m 644 files/network-manager-boot-keyfile.service "${ROOTFS_DIR}/etc/sys
 
 # finally enable services 
 on_chroot <<EOF
+systemctl enable NetworkManagere
 systemctl enable reload-lan.service
 systemctl enable network-manager-boot-keyfile.service
 EOF
