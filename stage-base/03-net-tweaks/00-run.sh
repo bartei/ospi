@@ -32,7 +32,7 @@ install -m 644 files/network-manager-boot-keyfile.service "${ROOTFS_DIR}/etc/sys
 
 # finally enable services 
 on_chroot <<EOF
-systemctl enable NetworkManagere
+systemctl enable NetworkManager
 systemctl enable reload-lan.service
 systemctl enable network-manager-boot-keyfile.service
 EOF
