@@ -1,37 +1,90 @@
-name: Generate Image
+name: Release CI
 
 on:
   push:
-    branches:
-      - main
-
+    branches: [ "main", "dev" ]
 
 jobs:
-  generate:
+
+  build:
+
     runs-on: ubuntu-latest
-    concurrency: release
 
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
 
-    - name: Install packages
-      run: |
-        sudo apt-get update && \
-        sudo apt-get install -yy coreutils quilt parted qemu-user-static debootstrap zerofree zip \
-        dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc \
-        qemu-utils kpartx gpg pigz
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    - name: Set deploy dir
-      run: echo DEPLOY_DIR=/opt/deploy >> config
-    - name: Config
-      run: sudo ./build.sh -c config
+      - name: Determine Branch
+        run: echo "BRANCH=${{ github.ref }}" >> $GITHUB_ENV
 
-    - name: List Dir
-      run: ls /opt/deploy -l
+      - name: Git Semantic Version
+        uses: PaulHatch/semantic-version@v4.0.3
+        with:
+          major_pattern: "major:"
+          minor_pattern: "feat:"
+          format: "${major}.${minor}.${patch}-prerelease${increment}"
+        id: version
 
-    - uses: actions/upload-artifact@v3
-      with:
-        name: image
-        path: /opt/deploy/*.img
+      - name: Create New Format Version
+        env:
+          PROD_VERSION: "${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{ steps.version.outputs.patch}}"
+          DEV_VERSION: "${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{ steps.version.outputs.patch }}-prerelease${{ steps.version.outputs.increment }}"
+        run: |
+          echo "${{steps.version.outputs.version}}"
+          if [[ "${{ env.BRANCH }}" == "refs/heads/main" ]]; then
+            echo "NEW_VERSION=${{ env.PROD_VERSION }}" >> $GITHUB_ENV
+          elif [[ "${{ env.BRANCH }}" == "refs/heads/dev" ]]; then
+            echo "NEW_VERSION=${{ env.DEV_VERSION }}" >> $GITHUB_ENV
+          fi
+
+      - name: Create Git Tag
+        run: |
+          git config user.name "$(git log -n 1 --pretty=format:%an)"
+          git config user.email "$(git log -n 1 --pretty=format:%ae)"
+          git tag -a v${{ env.NEW_VERSION }} -m "Version v${{ env.NEW_VERSION }}"
+          git push origin refs/tags/v${{ env.NEW_VERSION }}
+
+      - name: Update Package Version
+        run: |
+         NEW_VERSION=$(npm --no-git-tag-version version from-git) && git commit -am "Bump version to $NEW_VERSION" && git push origin ${{ env.BRANCH }}
+
+#name: Generate Image
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#
+#
+#jobs:
+#  generate:
+#    runs-on: ubuntu-latest
+#    concurrency: release
+#
+#    steps:
+#    - uses: actions/checkout@v2
+#      with:
+#        fetch-depth: 0
+#
+#    - name: Install packages
+#      run: |
+#        sudo apt-get update && \
+#        sudo apt-get install -yy coreutils quilt parted qemu-user-static debootstrap zerofree zip \
+#        dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc \
+#        qemu-utils kpartx gpg pigz
+#
+#    - name: Set deploy dir
+#      run: echo DEPLOY_DIR=/opt/deploy >> config
+#    - name: Config
+#      run: sudo ./build.sh -c config
+#
+#    - name: List Dir
+#      run: ls /opt/deploy -l
+#
+#    - uses: actions/upload-artifact@v3
+#      with:
+#        name: image
+#        path: /opt/deploy/*.img
