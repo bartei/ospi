@@ -34,4 +34,4 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: image
-        path: /opt/deploy/$(ls /opt/deploy/*.img)
+        path: /opt/deploy/*.img
