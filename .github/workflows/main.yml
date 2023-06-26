@@ -54,18 +54,7 @@ jobs:
           qemu-utils kpartx gpg pigz
 
       - name: Build Kivy Release
-        env:
-          TIMEZONE_DEFAULT: 'America/Chicago'
-          IMG_NAME: 'ospi'
-          FIRST_USER_NAME: 'default'
-          FIRST_USER_PASS: 'default'
-          DISABLE_FIRST_BOOT_USER_RENAME: 1
-          ENABLE_SSH: '1'
-          STAGE_LIST: 'stage0 stage1 stage2 stage-base'
-          WORK_DIR: '/opt/pi-gen/work'
-          DEPLOY_DIR: '/opt/deploy'
-          DEPLOY_ZIP: '1'
-        run: sudo ./build.sh
+        run: sudo ./build.sh -c kivy.conf
 
       - name: Get Image Name
         run: echo "IMAGE_PATH=$(ls /opt/deploy/*.zip)" >> $GITHUB_ENV
