@@ -1,0 +1,32 @@
+name: Semantic Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    concurrency: release
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Install packages
+      run: apt-get install -yy
+
+    - name: Set deploy dir
+      run: echo DEPLOY_DIR=/opt/deploy >> config
+    - name: Config
+      run: sudo ./build.sh -c config
+
+    - name: List Dir
+      run: ls /opt/deploy -l
+
+#    - uses: actions/upload-artifact@v3
+#      with:
+#        name: my-artifact
+#        path: path/to/artifact/world.txt
