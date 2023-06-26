@@ -1,0 +1,12 @@
+[Unit]
+Description=Lan Network Driver Reload
+Wants=network.target network-online.target
+After=update-hostname.service
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/reload-lan.sh
+
+[Install]
+WantedBy=multi-user.target
+WantedBy=network-online.target
