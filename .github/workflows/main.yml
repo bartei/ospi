@@ -17,7 +17,9 @@ jobs:
         fetch-depth: 0
 
     - name: Install packages
-      run: apt-get install -yy
+      run: sudo apt-get update && apt-get install -yy coreutils quilt parted qemu-user-static debootstrap zerofree zip \
+           dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc \
+           qemu-utils kpartx gpg pigz
 
     - name: Set deploy dir
       run: echo DEPLOY_DIR=/opt/deploy >> config
