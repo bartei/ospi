@@ -11,6 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Cache Build Folder
+        id: cache-pi-gen
+        uses: actions/cache@v3
+        with:
+           path: "/opt/pi-gen/work"
+           key: cache-pi-gen
 
       - name: Checkout Code
         uses: actions/checkout@v3
