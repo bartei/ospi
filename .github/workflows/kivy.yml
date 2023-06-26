@@ -1,36 +1,36 @@
-name: Generate Kivy
-
-on:
-  push:
-    branches:
-      - kivy
-
-jobs:
-  generate:
-    runs-on: ubuntu-latest
-    concurrency: release
-
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-
-    - name: Install packages
-      run: |
-        sudo apt-get update && \
-        sudo apt-get install -yy coreutils quilt parted qemu-user-static debootstrap zerofree zip \
-        dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc \
-        qemu-utils kpartx gpg pigz
-
-    - name: Set deploy dir
-      run: echo DEPLOY_DIR=/opt/deploy >> config
-    - name: Config
-      run: sudo ./build.sh -c kivy.conf
-
-    - name: List Dir
-      run: ls /opt/deploy -l
-
-    - uses: actions/upload-artifact@v3
-      with:
-        name: image
-        path: /opt/deploy/*.zip
+#name: Generate Kivy
+#
+#on:
+#  push:
+#    branches:
+#      - kivy
+#
+#jobs:
+#  generate:
+#    runs-on: ubuntu-latest
+#    concurrency: release
+#
+#    steps:
+#    - uses: actions/checkout@v2
+#      with:
+#        fetch-depth: 0
+#
+#    - name: Install packages
+#      run: |
+#        sudo apt-get update && \
+#        sudo apt-get install -yy coreutils quilt parted qemu-user-static debootstrap zerofree zip \
+#        dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc \
+#        qemu-utils kpartx gpg pigz
+#
+#    - name: Set deploy dir
+#      run: echo DEPLOY_DIR=/opt/deploy >> config
+#    - name: Config
+#      run: sudo ./build.sh -c kivy.conf
+#
+#    - name: List Dir
+#      run: ls /opt/deploy -l
+#
+#    - uses: actions/upload-artifact@v3
+#      with:
+#        name: image
+#        path: /opt/deploy/*.zip

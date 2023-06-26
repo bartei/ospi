@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  build:
+  release:
 
     runs-on: ubuntu-latest
 
@@ -40,51 +40,55 @@ jobs:
             echo "NEW_VERSION=${{ env.DEV_VERSION }}" >> $GITHUB_ENV
           fi
 
-      - name: Create Git Tag
+      - name: Install packages
         run: |
-          git config user.name "$(git log -n 1 --pretty=format:%an)"
-          git config user.email "$(git log -n 1 --pretty=format:%ae)"
-          git tag -a v${{ env.NEW_VERSION }} -m "Version v${{ env.NEW_VERSION }}"
-          git push origin refs/tags/v${{ env.NEW_VERSION }}
+          sudo apt-get update && \
+          sudo apt-get install -yy coreutils quilt parted qemu-user-static debootstrap zerofree zip \
+          dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc \
+          qemu-utils kpartx gpg pigz
 
-      - name: Update Package Version
-        run: |
-         NEW_VERSION=$(npm --no-git-tag-version version from-git) && git commit -am "Bump version to $NEW_VERSION" && git push origin ${{ env.BRANCH }}
+      - name: Build Kivy Release
+        env:
+          TIMEZONE_DEFAULT: 'America/Chicago'
+          IMG_NAME: 'ospi'
+          FIRST_USER_NAME: 'default'
+          FIRST_USER_PASS: 'default'
+          DISABLE_FIRST_BOOT_USER_RENAME: 1
+          ENABLE_SSH: '1'
+          STAGE_LIST: 'stage0 stage1 stage2 stage-base'
+          WORK_DIR: '/opt/pi-gen/work'
+          DEPLOY_DIR: '/opt/deploy'
+          DEPLOY_ZIP: '1'
+        run: sudo ./build.sh
 
-#name: Generate Image
-#
-#on:
-#  push:
-#    branches:
-#      - main
-#
-#
-#jobs:
-#  generate:
-#    runs-on: ubuntu-latest
-#    concurrency: release
-#
-#    steps:
-#    - uses: actions/checkout@v2
-#      with:
-#        fetch-depth: 0
-#
-#    - name: Install packages
-#      run: |
-#        sudo apt-get update && \
-#        sudo apt-get install -yy coreutils quilt parted qemu-user-static debootstrap zerofree zip \
-#        dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc \
-#        qemu-utils kpartx gpg pigz
-#
-#    - name: Set deploy dir
-#      run: echo DEPLOY_DIR=/opt/deploy >> config
-#    - name: Config
-#      run: sudo ./build.sh -c config
-#
-#    - name: List Dir
-#      run: ls /opt/deploy -l
-#
-#    - uses: actions/upload-artifact@v3
-#      with:
-#        name: image
-#        path: /opt/deploy/*.img
+      - name: Get Image Name
+        run: echo "IMAGE_PATH=$(ls /opt/deploy/*.zip)" >> $GITHUB_ENV
+
+#      - name: Create Git Tag
+#        run: |
+#          git config user.name "$(git log -n 1 --pretty=format:%an)"
+#          git config user.email "$(git log -n 1 --pretty=format:%ae)"
+#          git tag -a v${{ env.NEW_VERSION }} -m "Version v${{ env.NEW_VERSION }}"
+#          git push origin refs/tags/v${{ env.NEW_VERSION }}
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ env.NEW_VERSION }}
+          tag_name: v${{ env.NEW_VERSION }}
+          body_path: CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Upload Image
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.IMAGE_PATH }}
+          asset_name: ospi-image.zip
+          asset_content_type: application/zip
