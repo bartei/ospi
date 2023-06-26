@@ -1,4 +1,5 @@
 #!/bin/bash -e
+set -x
 
 if [[ "${DISABLE_FIRST_BOOT_USER_RENAME}" == "0" ]]; then
 	on_chroot <<- EOF

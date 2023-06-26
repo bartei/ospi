@@ -30,7 +30,11 @@ install -m 644 files/reload-lan.service "${ROOTFS_DIR}/etc/systemd/system/reload
 install -m 755 files/network-manager-boot-keyfile.sh "${ROOTFS_DIR}/sbin/network-manager-boot-keyfile.sh"
 install -m 644 files/network-manager-boot-keyfile.service "${ROOTFS_DIR}/etc/systemd/system/network-manager-boot-keyfile.service"
 
-# finally enable services 
+# Always enable wifi
+echo 1 > "${ROOTFS_DIR}/var/lib/systemd/rfkill/platform-3f300000.mmcnr:wlan"
+echo 1 > "${ROOTFS_DIR}/var/lib/systemd/rfkill/platform-fe300000.mmcnr:wlan"
+
+# finally enable services
 on_chroot <<EOF
 systemctl enable NetworkManager
 systemctl enable reload-lan.service
