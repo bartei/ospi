@@ -31,7 +31,7 @@ jobs:
     - name: List Dir
       run: ls /opt/deploy -l
 
-#    - uses: actions/upload-artifact@v3
-#      with:
-#        name: my-artifact
-#        path: path/to/artifact/world.txt
+    - uses: actions/upload-artifact@v3
+      with:
+        name: image
+        path: /opt/deploy/$(ls /opt/deploy/*.img)
