@@ -1,4 +1,4 @@
-name: Semantic Release
+name: Generate Image
 
 on:
   push:
