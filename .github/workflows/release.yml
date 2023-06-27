@@ -39,55 +39,9 @@ jobs:
             echo "NEW_VERSION=${{ env.DEV_VERSION }}" >> $GITHUB_ENV
           fi
 
-      - name: Install packages
-        run: |
-          sudo apt-get update && \
-          sudo apt-get install -yy coreutils quilt parted qemu-user-static debootstrap zerofree zip \
-          dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc \
-          qemu-utils kpartx gpg pigz
-
-#      - name: Build Kivy Release
-#        run: sudo ./build.sh -c kivy.conf
-
-      - name: Fake Build Kivy Release
-        run: mkdir -p /opt/deploy && touch /opt/deploy/fake.zip
-
-      - name: Get Image Name
-        run: echo "IMAGE_PATH=$(ls /opt/deploy/*.zip)" >> $GITHUB_ENV
-
       - name: Create Git Tag
         run: |
           git config user.name "$(git log -n 1 --pretty=format:%an)"
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
           git tag -a v${{ env.NEW_VERSION }} -m "Version v${{ env.NEW_VERSION }}"
           git push origin refs/tags/v${{ env.NEW_VERSION }}
-
-
-      - name: Release
-        uses: softprops/action-gh-release@v1
-#        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: |
-            ${{ env.IMAGE_PATH }}
-
-#      - name: Create Release
-#        uses: actions/create-release@v1
-#        id: create_release
-#        with:
-#          draft: false
-#          prerelease: false
-#          release_name: ${{ env.NEW_VERSION }}
-#          tag_name: v${{ env.NEW_VERSION }}
-#          body_path: CHANGELOG.md
-#        env:
-#          GITHUB_TOKEN: ${{ github.token }}
-
-#      - name: Upload Image
-#        uses: actions/upload-release-asset@v1
-#        env:
-#          GITHUB_TOKEN: ${{ github.token }}
-#        with:
-#          upload_url: ${{ steps.create_release.outputs.upload_url }}
-#          asset_path: ${{ env.IMAGE_PATH }}
-#          asset_name: ospi-image.zip
-#          asset_content_type: application/zip
