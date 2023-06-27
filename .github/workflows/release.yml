@@ -1,8 +1,9 @@
 name: Release
 
 on:
-  push:
-    branches: [ "main", "dev" ]
+  release:
+    types:
+      - created
 
 jobs:
 
@@ -24,7 +25,6 @@ jobs:
         with:
           major_pattern: "major:"
           minor_pattern: "feat:"
-          format: "${major}.${minor}.${patch}-prerelease${increment}"
         id: version
 
       - name: Create New Format Version
