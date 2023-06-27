@@ -71,4 +71,4 @@ jobs:
           tag_name: "v${{ env.NEW_VERSION }}"
           generate_release_notes: false
           files: |
-            *.zip
+            ${{ env.IMAGE_PATH }}
