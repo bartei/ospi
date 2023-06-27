@@ -66,24 +66,32 @@ jobs:
 #          git tag -a v${{ env.NEW_VERSION }} -m "Version v${{ env.NEW_VERSION }}"
 #          git push origin refs/tags/v${{ env.NEW_VERSION }}
 
-      - name: Create Release
-        uses: actions/create-release@v1
-        id: create_release
-        with:
-          draft: false
-          prerelease: false
-          release_name: ${{ env.NEW_VERSION }}
-          tag_name: v${{ env.NEW_VERSION }}
-          body_path: CHANGELOG.md
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Upload Image
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      - name: Release
+        uses: softprops/action-gh-release@v1
+#        if: startsWith(github.ref, 'refs/tags/')
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.IMAGE_PATH }}
-          asset_name: ospi-image.zip
-          asset_content_type: application/zip
+          files: |
+            ${{ env.IMAGE_PATH }}
+
+#      - name: Create Release
+#        uses: actions/create-release@v1
+#        id: create_release
+#        with:
+#          draft: false
+#          prerelease: false
+#          release_name: ${{ env.NEW_VERSION }}
+#          tag_name: v${{ env.NEW_VERSION }}
+#          body_path: CHANGELOG.md
+#        env:
+#          GITHUB_TOKEN: ${{ github.token }}
+
+#      - name: Upload Image
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ github.token }}
+#        with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }}
+#          asset_path: ${{ env.IMAGE_PATH }}
+#          asset_name: ospi-image.zip
+#          asset_content_type: application/zip
