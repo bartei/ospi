@@ -55,11 +55,8 @@ jobs:
           force: true
           tags: true
 
-#      - name: Build Kivy Release
-#        run: sudo ./build.sh -c kivy.conf
-
-      - name: Fake Build Kivy Release
-        run: mkdir -p /opt/deploy && echo "test" > /opt/deploy/fake.zip
+      - name: Build Kivy Release
+        run: sudo ./build.sh -c kivy.conf
 
       - name: Get Image Name
         run: echo "IMAGE_PATH=$(ls /opt/deploy/*.zip)" >> $GITHUB_ENV
