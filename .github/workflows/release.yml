@@ -48,3 +48,4 @@ jobs:
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
           git tag -a v${{ env.NEW_VERSION }} -m "Version v${{ env.NEW_VERSION }}"
           git push origin refs/tags/v${{ env.NEW_VERSION }}
+          git push origin --tags
