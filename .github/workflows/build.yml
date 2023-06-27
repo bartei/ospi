@@ -1,4 +1,4 @@
-name: Release CI
+name: Build
 
 on:
   push:
@@ -7,15 +7,13 @@ on:
 
 jobs:
 
-  release:
+  build:
 
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
       - name: Install packages
         run: |
