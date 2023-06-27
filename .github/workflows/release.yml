@@ -47,5 +47,10 @@ jobs:
           git config --local user.name "Github Action"
           git config --local user.email "bartei81@gmail.com"
           git tag -a v${{ env.NEW_VERSION }} -m "Version v${{ env.NEW_VERSION }}"
-          git push origin refs/tags/v${{ env.NEW_VERSION }}
-          git push origin --tags
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PAT_TOKEN }}
+          force: true
+          tags: true
