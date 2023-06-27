@@ -50,7 +50,7 @@ jobs:
 #        run: sudo ./build.sh -c kivy.conf
 
       - name: Fake Build Kivy Release
-        run: touch /opt/deploy/fake.zip
+        run: mkdir -p /opt/deploy && touch /opt/deploy/fake.zip
 
       - name: Get Image Name
         run: echo "IMAGE_PATH=$(ls /opt/deploy/*.zip)" >> $GITHUB_ENV
