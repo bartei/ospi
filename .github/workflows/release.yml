@@ -11,13 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Cache Build Folder
-        id: cache-pi-gen
-        uses: actions/cache@v3
-        with:
-           path: "/opt/pi-gen/work"
-           key: cache-pi-gen
-
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
@@ -27,7 +20,7 @@ jobs:
         run: echo "BRANCH=${{ github.ref }}" >> $GITHUB_ENV
 
       - name: Git Semantic Version
-        uses: PaulHatch/semantic-version@v4.0.3
+        uses: PaulHatch/semantic-version@v5.0.3
         with:
           major_pattern: "major:"
           minor_pattern: "feat:"
@@ -53,18 +46,21 @@ jobs:
           dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc \
           qemu-utils kpartx gpg pigz
 
-      - name: Build Kivy Release
-        run: sudo ./build.sh -c kivy.conf
+#      - name: Build Kivy Release
+#        run: sudo ./build.sh -c kivy.conf
+
+      - name: Fake Build Kivy Release
+        run: touch /opt/deploy/fake.zip
 
       - name: Get Image Name
         run: echo "IMAGE_PATH=$(ls /opt/deploy/*.zip)" >> $GITHUB_ENV
 
-#      - name: Create Git Tag
-#        run: |
-#          git config user.name "$(git log -n 1 --pretty=format:%an)"
-#          git config user.email "$(git log -n 1 --pretty=format:%ae)"
-#          git tag -a v${{ env.NEW_VERSION }} -m "Version v${{ env.NEW_VERSION }}"
-#          git push origin refs/tags/v${{ env.NEW_VERSION }}
+      - name: Create Git Tag
+        run: |
+          git config user.name "$(git log -n 1 --pretty=format:%an)"
+          git config user.email "$(git log -n 1 --pretty=format:%ae)"
+          git tag -a v${{ env.NEW_VERSION }} -m "Version v${{ env.NEW_VERSION }}"
+          git push origin refs/tags/v${{ env.NEW_VERSION }}
 
 
       - name: Release
