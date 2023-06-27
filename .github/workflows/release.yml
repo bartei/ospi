@@ -54,3 +54,21 @@ jobs:
           github_token: ${{ secrets.PAT_TOKEN }}
           force: true
           tags: true
+
+#      - name: Build Kivy Release
+#        run: sudo ./build.sh -c kivy.conf
+
+      - name: Fake Build Kivy Release
+        run: mkdir -p /opt/deploy && touch /opt/deploy/fake.zip
+
+      - name: Get Image Name
+        run: echo "IMAGE_PATH=$(ls /opt/deploy/*.zip)" >> $GITHUB_ENV
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          tag_name: "v${{ env.NEW_VERSION }}"
+          generate_release_notes: false
+          files: |
+            *.zip
