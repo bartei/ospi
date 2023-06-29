@@ -4,7 +4,6 @@ log (){
 export -f log
 
 bootstrap(){
-    set -x
 	local BOOTSTRAP_CMD=debootstrap
 	local BOOTSTRAP_ARGS=()
 
@@ -30,7 +29,6 @@ bootstrap(){
 export -f bootstrap
 
 copy_previous(){
-    set -x
 	if [ ! -d "${PREV_ROOTFS_DIR}" ]; then
 		echo "Previous stage rootfs not found"
 		false
@@ -41,7 +39,6 @@ copy_previous(){
 export -f copy_previous
 
 unmount(){
-    set -x
 	if [ -z "$1" ]; then
 		DIR=$PWD
 	else
@@ -59,7 +56,6 @@ unmount(){
 export -f unmount
 
 unmount_image(){
-    set -x
 	sync
 	sleep 1
 	LOOP_DEVICE=$(losetup --list | grep "$1" | cut -f1 -d' ')
@@ -75,7 +71,6 @@ unmount_image(){
 export -f unmount_image
 
 on_chroot() {
-    set -x
 	if ! mount | grep -q "$(realpath "${ROOTFS_DIR}"/proc)"; then
 		mount -t proc proc "${ROOTFS_DIR}/proc"
 	fi

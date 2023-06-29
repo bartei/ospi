@@ -1,5 +1,4 @@
 #!/bin/bash -e
-set -x
 
 if [ "${NO_PRERUN_QCOW2}" = "0" ]; then
 

@@ -1,7 +1,42 @@
 # pi-gen
 
-Tool used to create Raspberry Pi OS images. (Previously known as Raspbian).
+## Custom pi-gen: Easier Configuration and UI-Based Applications
 
+This repository contains a custom version of **pi-gen**, which enhances the base Raspbian 
+operating system with various customizations. These modifications aim to simplify the 
+configuration process, particularly for networking, using network-manager templates 
+stored in the `/boot` folder. The `/boot` folder is conveniently accessible when creating 
+the disk image on an SSD from any operating system.
+
+### Customizations
+
+The customizations provided by this version of pi-gen include:
+
+- **Network Configuration:** Utilize network-manager templates stored in `/boot` for simpler network setup.
+- **Plymouth Splash Logo:** Enhance the boot experience with a customized splash logo.
+- **Modified Login Page:** Display system status information upon getty login.
+
+Additionally, **avahi** is installed as part of this custom stage. Avahi facilitates device discovery on 
+the network and allows for easy resource sharing when required.
+
+### Default Configuration
+
+By default, pi-gen is configured to create a default user, with the default password set to "default".
+
+### Kivy Integration: High Performance UI
+
+The most significant feature of this custom version is the inclusion of all the necessary packages 
+and dependencies to install and run **Kivy** without relying on an X11 server or Wayland server. This 
+configuration offers incredible performance advantages and has a minimal storage footprint. As a 
+result, the Raspberry Pi becomes an ideal candidate for developing UI-based applications.
+
+To showcase the capabilities of this custom pi-gen, two example repositories are available under my 
+GitHub username:
+
+- [Rotary Controller](https://github.com/bartei/rotary-controller-python)
+
+Feel free to explore these repositories to learn more about developing UI applications using Kivy 
+on the Raspberry Pi.
 
 ## Dependencies
 
