@@ -4,21 +4,21 @@ log (){
 export -f log
 
 bootstrap(){
-    set -x
 	local BOOTSTRAP_CMD=debootstrap
 	local BOOTSTRAP_ARGS=()
 
 	export http_proxy=${APT_PROXY}
 
-	BOOTSTRAP_ARGS+=(--arch armhf)
+	BOOTSTRAP_ARGS+=(--arch arm64)
+	BOOTSTRAP_ARGS+=(--include gnupg)
 	BOOTSTRAP_ARGS+=(--components "main,contrib,non-free")
-	BOOTSTRAP_ARGS+=(--keyring "${STAGE_DIR}/files/raspberrypi.gpg")
+	#BOOTSTRAP_ARGS+=(--keyring "${STAGE_DIR}/files/raspberrypi.gpg")
 	BOOTSTRAP_ARGS+=(--exclude=info)
 	BOOTSTRAP_ARGS+=(--include=ca-certificates)
 	BOOTSTRAP_ARGS+=("$@")
 	printf -v BOOTSTRAP_STR '%q ' "${BOOTSTRAP_ARGS[@]}"
 
-	setarch linux32 capsh $CAPSH_ARG -- -c "'${BOOTSTRAP_CMD}' $BOOTSTRAP_STR" || true
+	capsh $CAPSH_ARG -- -c "'${BOOTSTRAP_CMD}' $BOOTSTRAP_STR" || true
 
 	if [ -d "$2/debootstrap" ] && ! rmdir "$2/debootstrap"; then
 		cp "$2/debootstrap/debootstrap.log" "${STAGE_WORK_DIR}"
@@ -29,7 +29,6 @@ bootstrap(){
 export -f bootstrap
 
 copy_previous(){
-    set -x
 	if [ ! -d "${PREV_ROOTFS_DIR}" ]; then
 		echo "Previous stage rootfs not found"
 		false
@@ -40,7 +39,6 @@ copy_previous(){
 export -f copy_previous
 
 unmount(){
-    set -x
 	if [ -z "$1" ]; then
 		DIR=$PWD
 	else
@@ -58,7 +56,6 @@ unmount(){
 export -f unmount
 
 unmount_image(){
-    set -x
 	sync
 	sleep 1
 	LOOP_DEVICE=$(losetup --list | grep "$1" | cut -f1 -d' ')
@@ -74,7 +71,6 @@ unmount_image(){
 export -f unmount_image
 
 on_chroot() {
-    set -x
 	if ! mount | grep -q "$(realpath "${ROOTFS_DIR}"/proc)"; then
 		mount -t proc proc "${ROOTFS_DIR}/proc"
 	fi
@@ -91,7 +87,15 @@ on_chroot() {
 		mount --bind /sys "${ROOTFS_DIR}/sys"
 	fi
 
-	setarch linux32 capsh $CAPSH_ARG "--chroot=${ROOTFS_DIR}/" -- -e "$@"
+	if ! mount | grep -q "$(realpath "${ROOTFS_DIR}"/run)"; then
+		mount -t tmpfs  tmpfs "${ROOTFS_DIR}/run"
+	fi
+
+	if ! mount | grep -q "$(realpath "${ROOTFS_DIR}"/tmp)"; then
+		mount -t tmpfs  tmpfs "${ROOTFS_DIR}/tmp"
+	fi
+
+	capsh $CAPSH_ARG "--chroot=${ROOTFS_DIR}/" -- -e "$@"
 }
 export -f on_chroot
 

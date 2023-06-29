@@ -6,7 +6,6 @@
 # named for the tool (i.e., qemu-user-static).
 dependencies_check()
 {
-    set -x
 	local depfile deps missing
 
 	for depfile in "$@"; do
