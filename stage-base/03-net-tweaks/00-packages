@@ -1,4 +1,5 @@
 plymouth
-network-manager
+ifupdown2
+-network-manager
 avahi-utils
 ntp
