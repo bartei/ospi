@@ -90,6 +90,11 @@ The following environment variables are supported:
    but you should use something else for a customized version.  Export files
    in stages may add suffixes to `IMG_NAME`.
 
+ * `PI_GEN_RELEASE` (Default: `Raspberry Pi reference`)
+
+   The release name to use in `/etc/issue.txt`. The default should only be used
+   for official Raspberry Pi builds.
+
 * `USE_QCOW2` **EXPERIMENTAL** (Default: `0` )
 
     Instead of using traditional way of building the rootfs of every stage in
@@ -566,8 +571,7 @@ To resolve this, ensure that the following files are available (install them if 
 
 ```
 /lib/modules/$(uname -r)/kernel/fs/binfmt_misc.ko
-/usr/bin/qemu-aarch64-static
-
+/usr/bin/qemu-arm-static
 ```
 
 You may also need to load the module by hand - run `modprobe binfmt_misc`.

@@ -48,5 +48,5 @@ EOF
 # Make sure the dynamic libraries cache is updated:
 on_chroot <<EOF
 ldconfig -v
-adduser "$USER" render
+usermod -aG render ${FIRST_USER_NAME}
 EOF

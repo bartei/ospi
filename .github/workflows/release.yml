@@ -5,11 +5,10 @@ on:
     branches:
       - main
       - dev
+      - track
 
 jobs:
-
   release:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -32,12 +31,15 @@ jobs:
         env:
           PROD_VERSION: "${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{ steps.version.outputs.patch}}"
           DEV_VERSION: "${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{ steps.version.outputs.patch }}-prerelease${{ steps.version.outputs.increment }}"
+          TRACK_VERSION: "${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{ steps.version.outputs.patch }}-track${{ steps.version.outputs.increment }}"
         run: |
           echo "${{steps.version.outputs.version}}"
           if [[ "${{ env.BRANCH }}" == "refs/heads/main" ]]; then
             echo "NEW_VERSION=${{ env.PROD_VERSION }}" >> $GITHUB_ENV
           elif [[ "${{ env.BRANCH }}" == "refs/heads/dev" ]]; then
             echo "NEW_VERSION=${{ env.DEV_VERSION }}" >> $GITHUB_ENV
+          elif [[ "${{ env.BRANCH }}" == "refs/heads/track" ]]; then
+            echo "NEW_VERSION=${{ env.TRACK_VERSION }}" >> $GITHUB_ENV
           fi
 
       - name: Create Git Tag
