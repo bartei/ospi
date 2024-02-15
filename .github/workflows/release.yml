@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - dev
+      - bookworm
 
 jobs:
   release:
@@ -36,6 +37,8 @@ jobs:
             echo "NEW_VERSION=${{ env.PROD_VERSION }}" >> $GITHUB_ENV
           elif [[ "${{ env.BRANCH }}" == "refs/heads/dev" ]]; then
             echo "NEW_VERSION=${{ env.DEV_VERSION }}" >> $GITHUB_ENV
+          else
+            echo "NEW_VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
           fi
 
       - name: Create Git Tag
