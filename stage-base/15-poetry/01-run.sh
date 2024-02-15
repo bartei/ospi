@@ -2,5 +2,5 @@
 
 # finally enable services 
 on_chroot <<EOF
-pip install poetry
+pip install poetry --break-system-packages
 EOF
