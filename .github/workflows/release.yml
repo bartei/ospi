@@ -30,15 +30,13 @@ jobs:
       - name: Create New Format Version
         env:
           PROD_VERSION: "${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{ steps.version.outputs.patch}}"
-          DEV_VERSION: "${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{ steps.version.outputs.patch }}-prerelease${{ steps.version.outputs.increment }}"
+          DEV_VERSION: "${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{ steps.version.outputs.patch }}-${{github.ref_name}}.${{ steps.version.outputs.increment }}"
         run: |
           echo "${{steps.version.outputs.version}}"
           if [[ "${{ env.BRANCH }}" == "refs/heads/main" ]]; then
             echo "NEW_VERSION=${{ env.PROD_VERSION }}" >> $GITHUB_ENV
-          elif [[ "${{ env.BRANCH }}" == "refs/heads/dev" ]]; then
-            echo "NEW_VERSION=${{ env.DEV_VERSION }}" >> $GITHUB_ENV
           else
-            echo "NEW_VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
+            echo "NEW_VERSION=${{ env.DEV_VERSION }}" >> $GITHUB_ENV
           fi
 
       - name: Create Git Tag
