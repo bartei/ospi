@@ -65,7 +65,10 @@ jobs:
         run: sudo ./build.sh -c kivy.conf
 
       - name: Get Image Name
-        run: echo "IMAGE_PATH=$(ls /opt/deploy/*.zip)" >> $GITHUB_ENV
+        run: |
+          IMAGES=$(ls /opt/deploy/*.zip)
+          IMAGE_PATH=$(echo $IMAGES | tr ' ' '\n' | tr '\n' ',')
+          echo "IMAGE_PATH=$IMAGE_PATH" >> $GITHUB_ENV
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -73,5 +76,16 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }}
           tag_name: "v${{ env.NEW_VERSION }}"
           generate_release_notes: false
-          files: |
-            ${{ env.IMAGE_PATH }}
+          files: ${{ env.IMAGE_PATH }}
+
+#      - name: Get Image Name
+#        run: echo "IMAGE_PATH=$(ls /opt/deploy/*.zip)" >> $GITHUB_ENV
+#
+#      - name: Release
+#        uses: softprops/action-gh-release@v1
+#        with:
+#          token: ${{ secrets.PAT_TOKEN }}
+#          tag_name: "v${{ env.NEW_VERSION }}"
+#          generate_release_notes: false
+#          files: |
+#            ${{ env.IMAGE_PATH }}
