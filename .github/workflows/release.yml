@@ -6,6 +6,7 @@ on:
       - main
       - dev
       - bookworm
+      - arm64
 
 jobs:
   release:
