@@ -1,4 +1,5 @@
 build-essential
+cmake
 gir1.2-ibus-1.0
 git
 gstreamer1.0-alsa
