@@ -1,6 +1,5 @@
 #!/bin/bash -e
 
-# finally enable services
 on_chroot <<EOF
 curl https://raw.githubusercontent.com/kivy/kivy/master/tools/build_linux_dependencies.sh -o build_kivy_deps.sh
 chmod +x build_kivy_deps.sh
