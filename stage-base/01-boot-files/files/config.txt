@@ -45,3 +45,5 @@ otg_mode=1
 [all]
 # disable boot rainbow
 disable_splash=1
+enable_uart=1
+init_uart_clock=14745600
