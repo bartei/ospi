@@ -1,5 +1,5 @@
 # For more options and information see
-# http://rptl.io/configtxt
+# http://rpf.io/configtxt
 # Some settings may impact device functionality. See link above for details
 
 # Uncomment some or all of these to enable the optional hardware interfaces
@@ -30,9 +30,6 @@ max_framebuffers=2
 # Use the kernel's default instead.
 disable_fw_kms_setup=1
 
-# Run in 64-bit mode
-arm_64bit=1
-
 # Disable compensation for displays with overscan
 disable_overscan=1
 
@@ -48,3 +45,5 @@ otg_mode=1
 [all]
 # disable boot rainbow
 disable_splash=1
+enable_uart=1
+init_uart_clock=14745600
