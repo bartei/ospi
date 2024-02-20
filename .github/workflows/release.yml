@@ -5,6 +5,8 @@ on:
     branches:
       - main
       - dev
+      - bookworm
+      - arm64
 
 jobs:
   release:
@@ -29,12 +31,12 @@ jobs:
       - name: Create New Format Version
         env:
           PROD_VERSION: "${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{ steps.version.outputs.patch}}"
-          DEV_VERSION: "${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{ steps.version.outputs.patch }}-prerelease${{ steps.version.outputs.increment }}"
+          DEV_VERSION: "${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{ steps.version.outputs.patch }}-${{github.ref_name}}.${{ steps.version.outputs.increment }}"
         run: |
           echo "${{steps.version.outputs.version}}"
           if [[ "${{ env.BRANCH }}" == "refs/heads/main" ]]; then
             echo "NEW_VERSION=${{ env.PROD_VERSION }}" >> $GITHUB_ENV
-          elif [[ "${{ env.BRANCH }}" == "refs/heads/dev" ]]; then
+          else
             echo "NEW_VERSION=${{ env.DEV_VERSION }}" >> $GITHUB_ENV
           fi
 
@@ -64,7 +66,10 @@ jobs:
         run: sudo ./build.sh -c kivy.conf
 
       - name: Get Image Name
-        run: echo "IMAGE_PATH=$(ls /opt/deploy/*.zip)" >> $GITHUB_ENV
+        run: |
+          IMAGES=$(ls /opt/deploy/*.zip)
+          IMAGE_PATH=$(echo $IMAGES | tr ' ' '\n' | tr '\n' ',')
+          echo "IMAGE_PATH=$IMAGE_PATH" >> $GITHUB_ENV
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -72,5 +77,4 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }}
           tag_name: "v${{ env.NEW_VERSION }}"
           generate_release_notes: false
-          files: |
-            ${{ env.IMAGE_PATH }}
+          files: ${{ env.IMAGE_PATH }}
