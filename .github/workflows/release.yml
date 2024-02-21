@@ -7,6 +7,7 @@ on:
       - dev
       - bookworm
       - arm64
+      - arm64-minimal
 
 jobs:
   release:

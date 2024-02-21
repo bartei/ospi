@@ -1,10 +1,5 @@
 #!/bin/bash -e
 
-# remove unused system stock packages
-on_chroot <<EOF
-apt-get autoremove --purge -yy dphys-swapfile
-EOF
-
 # provide a more detailed login prompt
 install -m 644 files/issue "${ROOTFS_DIR}/etc/issue"
 
