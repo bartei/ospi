@@ -1,7 +1,2 @@
-plymouth
-plymouth-themes
-isc-dhcp-common
-isc-dhcp-client
 ifupdown2
-avahi-utils
 ntp
