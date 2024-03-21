@@ -1,0 +1,12 @@
+[Unit]
+Description=Client Partition Autoexpand Service
+Wants=local-fs.target
+Before=network.target network-online.target pagekite.service
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/autoexpand.sh
+
+[Install]
+WantedBy=multi-user.target
+WantedBy=network-online.target

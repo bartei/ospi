@@ -90,11 +90,6 @@ The following environment variables are supported:
    but you should use something else for a customized version.  Export files
    in stages may add suffixes to `IMG_NAME`.
 
- * `PI_GEN_RELEASE` (Default: `Raspberry Pi reference`)
-
-   The release name to use in `/etc/issue.txt`. The default should only be used
-   for official Raspberry Pi builds.
-
 * `USE_QCOW2` **EXPERIMENTAL** (Default: `0` )
 
     Instead of using traditional way of building the rootfs of every stage in
@@ -118,7 +113,7 @@ The following environment variables are supported:
     that the network block device is not disconnected correctly after the Docker process has
     ended abnormally. In that case see [Disconnect an image if something went wrong](#Disconnect-an-image-if-something-went-wrong)
 
-* `RELEASE` (Default: bookworm)
+* `RELEASE` (Default: bullseye)
 
    The release version to build images against. Valid values are any supported
    Debian release. However, since different releases will have different sets of
@@ -235,9 +230,9 @@ The following environment variables are supported:
    stays activated. `FIRST_USER_PASS` must be set for this to work. Please be aware of the implied
    security risk of defining a default username and password for your devices.
 
- * `WPA_COUNTRY` (Default: unset)
+ * `WPA_ESSID`, `WPA_PASSWORD` and `WPA_COUNTRY` (Default: unset)
 
-   Sets the default WLAN regulatory domain and unblocks WLAN interfaces. This should be a 2-letter ISO/IEC 3166 country Code, i.e. `GB`
+   If these are set, they are use to configure `wpa_supplicant.conf`, so that the Raspberry Pi can automatically connect to a wireless network on first boot. If `WPA_ESSID` is set and `WPA_PASSWORD` is unset an unprotected wireless network will be configured. If set, `WPA_PASSWORD` must be between 8 and 63 characters. `WPA_COUNTRY` is a 2-letter ISO/IEC 3166 country Code, i.e. `GB`
 
  * `ENABLE_SSH` (Default: `0`)
 
@@ -571,7 +566,7 @@ To resolve this, ensure that the following files are available (install them if 
 
 ```
 /lib/modules/$(uname -r)/kernel/fs/binfmt_misc.ko
-/usr/bin/qemu-arm-static
+/usr/bin/qemu-aarch64-static
 ```
 
 You may also need to load the module by hand - run `modprobe binfmt_misc`.

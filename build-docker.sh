@@ -1,8 +1,6 @@
-#!/usr/bin/env bash
-# Note: Avoid usage of arrays as MacOS users have an older version of bash (v3.x) which does not supports arrays
-set -eu
+#!/bin/bash -eu
 
-DIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 BUILD_OPTS="$*"
 
@@ -86,12 +84,18 @@ ${DOCKER} build --build-arg BASE_IMAGE=debian:bullseye -t pi-gen "${DIR}"
 
 if [ "${CONTAINER_EXISTS}" != "" ]; then
   DOCKER_CMDLINE_NAME="${CONTAINER_NAME}_cont"
-  DOCKER_CMDLINE_PRE="--rm"
-  DOCKER_CMDLINE_POST="--volumes-from=${CONTAINER_NAME}"
+  DOCKER_CMDLINE_PRE=( \
+    --rm \
+  )
+  DOCKER_CMDLINE_POST=( \
+    --volumes-from="${CONTAINER_NAME}" \
+  )
 else
   DOCKER_CMDLINE_NAME="${CONTAINER_NAME}"
-  DOCKER_CMDLINE_PRE=""
-  DOCKER_CMDLINE_POST=""
+  DOCKER_CMDLINE_PRE=( \
+  )
+  DOCKER_CMDLINE_POST=( \
+  )
 fi
 
 # Check if binfmt_misc is required
@@ -132,7 +136,7 @@ fi
 
 trap 'echo "got CTRL+C... please wait 5s" && ${DOCKER} stop -t 5 ${DOCKER_CMDLINE_NAME}' SIGINT SIGTERM
 time ${DOCKER} run \
-  $DOCKER_CMDLINE_PRE \
+  "${DOCKER_CMDLINE_PRE[@]}" \
   --name "${DOCKER_CMDLINE_NAME}" \
   --privileged \
   --cap-add=ALL \
@@ -141,7 +145,7 @@ time ${DOCKER} run \
   ${PIGEN_DOCKER_OPTS} \
   --volume "${CONFIG_FILE}":/config:ro \
   -e "GIT_HASH=${GIT_HASH}" \
-  $DOCKER_CMDLINE_POST \
+  "${DOCKER_CMDLINE_POST[@]}" \
   pi-gen \
   bash -e -o pipefail -c "
     dpkg-reconfigure qemu-user-static &&
@@ -156,7 +160,7 @@ time ${DOCKER} run \
 echo "copying results from deploy/"
 ${DOCKER} cp "${CONTAINER_NAME}":/pi-gen/deploy - | tar -xf -
 
-echo "copying log from container ${CONTAINER_NAME} to deploy/"
+echo "copying log from container ${CONTAINER_NAME} to depoy/"
 ${DOCKER} logs --timestamps "${CONTAINER_NAME}" &>deploy/build-docker.log
 
 ls -lah deploy

@@ -7,4 +7,10 @@ SKIP_IMAGES
 .pc
 *-pc
 apt-cacher-ng/
-/.idea/**
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/.gitignore
+/.idea/GitlabLint.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/os-pi.iml
+/.idea/vcs.xml
