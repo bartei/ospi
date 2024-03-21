@@ -8,9 +8,8 @@ poetry run pip install kivy[base]
 poetry install
 EOF
 
-
-on_chroot <<EOF
-cd /root
-cd rotary-controller-python
-bash install-service.sh
-EOF
+# on_chroot <<EOF
+# cd /root
+# cd rotary-controller-python
+# bash install-service.sh
+# EOF
