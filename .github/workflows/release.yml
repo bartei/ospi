@@ -7,6 +7,8 @@ on:
       - dev
       - bookworm
 
+permissions: write-all
+
 jobs:
   release:
     runs-on: ubuntu-latest
