@@ -4,7 +4,7 @@ on_chroot <<EOF
 mkdir /kivy-deps-build
 cd /kivy-deps-build
 wget https://raw.githubusercontent.com/kivy/kivy/master/tools/build_linux_dependencies.sh
-chmod +x build_kivy_deps.sh
+chmod +x build_linux_dependencies.sh
 ./build_linux_dependencies.sh
 export KIVY_DEPS_ROOT=/kivy-deps-build/kivy-dependencies
 python -m pip install "kivy[base]" kivy_examples --no-binary kivy
