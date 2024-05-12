@@ -15,4 +15,7 @@ export POETRY_VERSION=1.8.2
 
 poetry run pip install kivy[base]
 poetry install
+
+cp ./systemd/rotary-controller.service /etc/systemd/system/.
+systemctl enable rotary-controller.service
 EOF
