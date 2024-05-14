@@ -7,7 +7,7 @@ cd rotary-controller-python
 git fetch -p
 git checkout dev
 
-poetry run pip install kivy[base]
+poetry run pip install kivy[base] numpy
 poetry install
 
 cp ./systemd/rotary-controller.service /etc/systemd/system/.

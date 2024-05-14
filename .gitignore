@@ -14,3 +14,5 @@ apt-cacher-ng/
 /.idea/modules.xml
 /.idea/os-pi.iml
 /.idea/vcs.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/ospi.iml

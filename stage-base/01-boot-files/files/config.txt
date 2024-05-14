@@ -1,5 +1,5 @@
 # For more options and information see
-# http://rpf.io/configtxt
+# http://rptl.io/configtxt
 # Some settings may impact device functionality. See link above for details
 
 # Uncomment some or all of these to enable the optional hardware interfaces
