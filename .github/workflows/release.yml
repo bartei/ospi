@@ -56,9 +56,11 @@ jobs:
       - name: Install packages
         run: |
           sudo apt-get update && \
-          sudo apt-get install -yy quilt parted realpath:coreutils qemu-arm-static:qemu-user-static debootstrap \
-            zerofree zip mkdosfs:dosfstools capsh:libcap2-bin bsdtar:libarchive-tools grep rsync xz:xz-utils curl \
-            xxd file git lsmod:kmod bc gpg pigz arch-test
+          sudo apt-get -y install --no-install-recommends \
+              git vim parted \
+              quilt coreutils qemu-user-static debootstrap zerofree zip dosfstools \
+              libarchive-tools libcap2-bin rsync grep udev xz-utils curl xxd file kmod bc \
+              binfmt-support ca-certificates fdisk gpg pigz arch-test \
 
       - name: Build Kivy Release
         run: sudo ./build.sh -c kivy.conf
