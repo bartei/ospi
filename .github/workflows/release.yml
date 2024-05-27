@@ -6,6 +6,7 @@ on:
       - main
       - dev
       - bookworm
+      - main-bullseye
 
 permissions: write-all
 
