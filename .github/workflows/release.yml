@@ -1,11 +1,16 @@
 name: Release
 
 on:
+  schedule:
+    - cron: "0 0 * * 0"
+
+  workflow_dispatch:
+
   push:
     branches:
       - main
       - dev
-      - bullseye32
+
 
 jobs:
   release:
