@@ -27,10 +27,11 @@ jobs:
         run: echo "BRANCH=${{ github.ref }}" >> $GITHUB_ENV
 
       - name: Git Semantic Version
-        uses: PaulHatch/semantic-version@v5.0.3
+        uses: PaulHatch/semantic-version@v5.4.0
         with:
           major_pattern: "major:"
           minor_pattern: "feat:"
+          bump_each_commit: true
         id: version
 
       - name: Create New Format Version
