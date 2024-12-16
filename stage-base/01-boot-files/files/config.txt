@@ -47,5 +47,5 @@ dtoverlay=dwc2,dr_mode=host
 
 [all]
 # disable boot rainbow
-# disable_splash=1
+disable_splash=1
 enable_uart=1
