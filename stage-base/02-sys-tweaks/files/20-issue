@@ -1,0 +1,3 @@
+#!/bin/sh
+echo ""
+echo OS/PI Release `cat /etc/rpi-issue`
