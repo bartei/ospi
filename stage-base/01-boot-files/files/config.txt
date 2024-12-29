@@ -24,6 +24,7 @@ auto_initramfs=1
 
 # Enable DRM VC4 V3D driver
 dtoverlay=vc4-kms-v3d
+dtoverlay=vc4-kms-dsi-waveshare-panel,10_1_inch
 max_framebuffers=2
 
 # Don't have the firmware create an initial video= setting in cmdline.txt.
