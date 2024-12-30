@@ -1,10 +1,15 @@
 name: Release
 
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - main
       - dev
+      - pi5
+
+permissions: write-all
 
 jobs:
   release:
@@ -20,10 +25,11 @@ jobs:
         run: echo "BRANCH=${{ github.ref }}" >> $GITHUB_ENV
 
       - name: Git Semantic Version
-        uses: PaulHatch/semantic-version@v5.0.3
+        uses: PaulHatch/semantic-version@v5.4.0
         with:
           major_pattern: "major:"
           minor_pattern: "feat:"
+          bump_each_commit: true
         id: version
 
       - name: Create New Format Version
@@ -56,11 +62,9 @@ jobs:
       - name: Install packages
         run: |
           sudo apt-get update && \
-          sudo apt-get -y install --no-install-recommends \
-              git vim parted \
-              quilt coreutils qemu-user-static debootstrap zerofree zip dosfstools \
-              libarchive-tools libcap2-bin rsync grep udev xz-utils curl xxd file kmod bc \
-              binfmt-support ca-certificates fdisk gpg pigz arch-test \
+          sudo apt-get install -yy coreutils quilt parted qemu-user-static debootstrap zerofree zip \
+          dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc arch-test \
+          qemu-utils kpartx gpg pigz
 
       - name: Build Kivy Release
         run: sudo ./build.sh -c kivy.conf

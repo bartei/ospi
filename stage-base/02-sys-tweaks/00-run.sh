@@ -1,7 +1,5 @@
 #!/bin/bash -e
 
-install -m 755 files/resize2fs_once	"${ROOTFS_DIR}/etc/init.d/"
-
 # remove unused system stock packages
 on_chroot <<EOF
 apt-get autoremove --purge -yy dphys-swapfile
