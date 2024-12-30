@@ -2,7 +2,7 @@
 
 on_chroot <<EOF
 cd /root
-git clone --depth 1 --branch v1.0.12 https://github.com/bartei/rotary-controller-python.git
+git clone --depth 1 --branch v1.0.13 https://github.com/bartei/rotary-controller-python.git
 cd rotary-controller-python
 git fetch -p
 git checkout
