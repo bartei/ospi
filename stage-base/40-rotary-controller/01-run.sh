@@ -4,6 +4,7 @@ on_chroot <<EOF
 cd /root
 git clone https://github.com/bartei/rotary-controller-python.git
 cd rotary-controller-python
+git checkout "v1.0.16"
 python3 -m venv ./venv
 source ./venv/bin/activate
 pip install .
