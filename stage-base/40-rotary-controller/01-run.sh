@@ -2,7 +2,7 @@
 
 on_chroot <<EOF
 cd /root
-git clone --depth 1 --branch v1.0.16 https://github.com/bartei/rotary-controller-python.git
+git clone --depth 1 --branch v1.0.17 https://github.com/bartei/rotary-controller-python.git
 cd rotary-controller-python
 python3 -m venv ./venv
 source ./venv/bin/activate
