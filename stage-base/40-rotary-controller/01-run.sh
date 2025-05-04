@@ -1,11 +1,11 @@
 #!/bin/bash -e
 
+install -v -m 644 files/rcp.service "${ROOTFS_DIR}/etc/systemd/system/rcp.service"
+install -v -m 755 files/start.sh "${ROOTFS_DIR}/start.sh"
+
 on_chroot <<EOF
-cd /root
 git clone https://github.com/bartei/rotary-controller-python.git
 cd rotary-controller-python
 pip install .
-cp systemd/rotary-controller.service /etc/systemd/system
-systemctl daemon-reload || true
-systemctl enable rotary-controller.service || true
+systemctl enable rcp.service || true
 EOF
