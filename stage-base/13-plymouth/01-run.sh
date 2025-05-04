@@ -1,8 +1,5 @@
 #!/bin/bash -e
 
-log "Adding necessary cmd only for splash screen"
-echo -n " quiet splash logo.nologo " >> "${ROOTFS_DIR}/boot/cmdline.txt"
-
 log "Create the theme directory"
 mkdir -p "${ROOTFS_DIR}/usr/share/plymouth/themes/ospi"
 
