@@ -8,4 +8,5 @@ git clone https://github.com/bartei/rotary-controller-python.git
 cd rotary-controller-python
 pip install .
 systemctl enable rcp.service || true
+systemctl enable NetworkManager || true
 EOF
