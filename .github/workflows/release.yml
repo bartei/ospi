@@ -63,7 +63,7 @@ jobs:
         run: |
           sudo apt-get update && \
           sudo apt-get install -yy coreutils quilt parted qemu-user-static debootstrap zerofree zip \
-          dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc \
+          dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc arch-test \
           qemu-utils kpartx gpg pigz
 
       - name: Build Kivy Release
