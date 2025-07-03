@@ -6,7 +6,7 @@ install -v -m 755 files/start.sh "${ROOTFS_DIR}/start.sh"
 on_chroot <<EOF
 cd /
 rm -rf /rotary-controller-python
-git clone --depth 1 --branch "v1.0.32" https://github.com/bartei/rotary-controller-python.git
+git clone --depth 1 --branch "v1.1.0" https://github.com/bartei/rotary-controller-python.git
 cd rotary-controller-python
 
 virtualenv --clear venv
