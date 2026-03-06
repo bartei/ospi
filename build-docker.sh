@@ -86,12 +86,14 @@ BUILD_OPTS="$(echo "${BUILD_OPTS:-}" | sed -E 's@\-c\s?([^ ]+)@-c /config@')"
 case "$(uname -m)" in
   x86_64|aarch64)
     BASE_IMAGE=i386/debian:trixie
+    DOCKER_PLATFORM="--platform linux/386"
     ;;
   *)
     BASE_IMAGE=debian:trixie
+    DOCKER_PLATFORM=""
     ;;
 esac
-${DOCKER} build --build-arg BASE_IMAGE=${BASE_IMAGE} -t pi-gen "${DIR}"
+${DOCKER} build ${DOCKER_PLATFORM} --build-arg BASE_IMAGE=${BASE_IMAGE} -t pi-gen "${DIR}"
 
 if [ "${CONTAINER_EXISTS}" != "" ]; then
   DOCKER_CMDLINE_NAME="${CONTAINER_NAME}_cont"
@@ -116,8 +118,8 @@ esac
 
 # Check if qemu-arm and /proc/sys/fs/binfmt_misc are present
 if [[ "${binfmt_misc_required}" == "1" ]]; then
-  if ! qemu_arm=$(which qemu-arm) ; then
-    echo "qemu-arm not found (please install qemu-user-binfmt)"
+  if ! qemu_arm=$(which qemu-arm 2>/dev/null || which qemu-arm-static 2>/dev/null) ; then
+    echo "qemu-arm not found (please install qemu-user-static)"
     exit 1
   fi
   if [ ! -f /proc/sys/fs/binfmt_misc/register ]; then
@@ -141,6 +143,7 @@ fi
 
 trap 'echo "got CTRL+C... please wait 5s" && ${DOCKER} stop -t 5 ${DOCKER_CMDLINE_NAME}' SIGINT SIGTERM
 time ${DOCKER} run \
+  ${DOCKER_PLATFORM} \
   $DOCKER_CMDLINE_PRE \
   --name "${DOCKER_CMDLINE_NAME}" \
   --privileged \
