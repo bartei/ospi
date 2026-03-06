@@ -76,7 +76,7 @@ build-image:
     # Register QEMU for ARM cross-compilation
     - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
   script:
-    - ./build-docker.sh -c ci.conf
+    - ./build-docker.sh -c "${CI_PROJECT_DIR}/ci.conf"
   artifacts:
     paths:
       - deploy/*.zip
