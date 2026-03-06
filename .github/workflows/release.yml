@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -58,24 +58,29 @@ jobs:
           force: true
           tags: true
 
-      - name: Install packages
+      - name: Free disk space
         run: |
-          sudo apt-get update && \
-          sudo apt-get install -yy coreutils quilt parted debootstrap zerofree zip \
-          dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc arch-test \
-          qemu-utils kpartx gpg pigz qemu-user-binfmt
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+          df -h
 
-      - name: Build Kivy Release
-        run: sudo ./build.sh -c kivy.conf
+      - name: Set up QEMU
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-user-static binfmt-support
+
+      - name: Build Image (Docker)
+        run: ./build-docker.sh -c ci.conf
 
       - name: Get Image Name
         run: |
-          IMAGES=$(ls /opt/deploy/*.zip)
+          IMAGES=$(ls deploy/*.zip)
           IMAGE_PATH=$(echo $IMAGES | tr ' ' '\n' | tr '\n' ',')
           echo "IMAGE_PATH=$IMAGE_PATH" >> $GITHUB_ENV
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.PAT_TOKEN }}
           tag_name: "v${{ env.NEW_VERSION }}"
