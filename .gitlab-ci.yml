@@ -1,4 +1,137 @@
-include:
-  - project: serge/pi-gen
-    ref: ci
-    file: 'pi-gen.yml'
+# GitLab CI/CD pipeline for OSPI (Raspberry Pi OS image builder)
+#
+# Requirements:
+#   - GitLab Runner with Docker executor configured for privileged mode
+#     (privileged = true in runner config.toml)
+#   - Runner tagged with "privileged" (adjust tags below if yours differ)
+#
+# Pipeline triggers on pushes to main/dev branches and manual runs.
+# Versioning follows the same convention as the GitHub workflow:
+#   main  -> MAJOR.MINOR.PATCH
+#   dev   -> MAJOR.MINOR.PATCH-dev.INCREMENT
+#   Commit prefixes: "major:" bumps major, "feat:" bumps minor, else bumps patch.
+
+stages:
+  - version
+  - build
+  - upload
+  - release
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_PIPELINE_SOURCE == "web"
+
+# ---------------------------------------------------------------------------
+# Compute semantic version from git tags and commit messages
+# ---------------------------------------------------------------------------
+compute-version:
+  stage: version
+  image: alpine/git:latest
+  script:
+    - |
+      git fetch --tags
+      LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+      VERSION=${LATEST_TAG#v}
+      MAJOR=$(echo "$VERSION" | cut -d. -f1)
+      MINOR=$(echo "$VERSION" | cut -d. -f2)
+      PATCH=$(echo "$VERSION" | cut -d. -f3 | cut -d- -f1)
+
+      if [ "$LATEST_TAG" != "v0.0.0" ]; then
+        COMMITS=$(git rev-list "${LATEST_TAG}..HEAD" --count)
+        LOG=$(git log "${LATEST_TAG}..HEAD" --oneline)
+      else
+        COMMITS=$(git rev-list HEAD --count)
+        LOG=$(git log --oneline)
+      fi
+
+      if echo "$LOG" | grep -q "major:"; then
+        MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0
+      elif echo "$LOG" | grep -q "feat:"; then
+        MINOR=$((MINOR + 1)); PATCH=0
+      elif [ "$COMMITS" -gt 0 ]; then
+        PATCH=$((PATCH + COMMITS))
+      fi
+
+      if [ "$CI_COMMIT_BRANCH" = "main" ]; then
+        NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+      else
+        NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}-${CI_COMMIT_BRANCH}.${COMMITS}"
+      fi
+
+      echo "VERSION=${NEW_VERSION}" >> version.env
+      echo "Computed version: v${NEW_VERSION}"
+  artifacts:
+    reports:
+      dotenv: version.env
+
+# ---------------------------------------------------------------------------
+# Build the Raspberry Pi OS image via Docker-in-Docker
+# ---------------------------------------------------------------------------
+build-image:
+  stage: build
+  image: docker:27
+  services:
+    - name: docker:27-dind
+      command: ["--storage-driver=overlay2"]
+  before_script:
+    - apk add --no-cache bash git rsync grep coreutils
+    # Register QEMU for ARM cross-compilation
+    - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+  script:
+    - bash ./build-docker.sh -c ci.conf
+  artifacts:
+    paths:
+      - deploy/*.zip
+      - deploy/*.log
+    expire_in: 30 days
+  tags:
+    - privileged
+  timeout: 2h
+
+# ---------------------------------------------------------------------------
+# Upload images to GitLab Generic Package Registry
+# ---------------------------------------------------------------------------
+upload-packages:
+  stage: upload
+  image: curlimages/curl:latest
+  needs:
+    - job: compute-version
+      artifacts: true
+    - job: build-image
+      artifacts: true
+  script:
+    - |
+      for file in deploy/*.zip; do
+        filename=$(basename "$file")
+        echo "Uploading ${filename}..."
+        curl --fail --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
+          --upload-file "$file" \
+          "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/ospi/${VERSION}/${filename}"
+      done
+
+# ---------------------------------------------------------------------------
+# Create a GitLab release with tag and link to packages
+# ---------------------------------------------------------------------------
+create-release:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - job: compute-version
+      artifacts: true
+    - job: upload-packages
+  script:
+    - echo "Creating release v${VERSION}"
+  release:
+    tag_name: "v${VERSION}"
+    name: "Release v${VERSION}"
+    description: "Release v${VERSION} from ${CI_COMMIT_BRANCH} (${CI_COMMIT_SHORT_SHA})"
+    assets:
+      links:
+        - name: "OSPI Image Packages"
+          url: "${CI_PROJECT_URL}/-/packages"
+          link_type: "package"
