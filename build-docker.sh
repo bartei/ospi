@@ -152,8 +152,6 @@ time ${DOCKER} run \
   bash -e -o pipefail -c "
     # binfmt_misc is sometimes not mounted with debian trixie image
     (mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc || true) &&
-    # Only reconfigure if ARM emulation is not already provided by the host kernel (F flag)
-    (arch-test armhf 2>/dev/null || dpkg-reconfigure qemu-user-binfmt) &&
     cd /pi-gen; ./build.sh ${BUILD_OPTS} &&
     rsync -av work/*/build.log deploy/
   " &
