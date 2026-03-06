@@ -128,8 +128,9 @@ if [[ "${binfmt_misc_required}" == "1" ]]; then
     fi
     echo "binfmt_misc mounted"
   fi
-  if ! grep -q "^interpreter ${qemu_arm}" /proc/sys/fs/binfmt_misc/qemu-arm* ; then
-    # Register qemu-arm for binfmt_misc
+  if ! ls /proc/sys/fs/binfmt_misc/qemu-arm* >/dev/null 2>&1 ; then
+    # Register qemu-arm for binfmt_misc only if no ARM entry exists yet
+    # (e.g., multiarch/qemu-user-static may have already registered one)
     reg="echo ':qemu-arm-rpi:M::"\
 "\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28\x00:"\
 "\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:"\
