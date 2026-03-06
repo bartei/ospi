@@ -89,8 +89,8 @@ build-image:
       - deploy/*.zip
       - deploy/*.log
     expire_in: 30 days
-  tags:
-    - privileged
+#  tags:
+#    - privileged
   timeout: 2h
 
 # ---------------------------------------------------------------------------
