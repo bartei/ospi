@@ -73,6 +73,8 @@ compute-version:
 build-image:
   stage: build
   before_script:
+    # Clean up any leftover container from a previous build
+    - docker rm -v pigen_work 2>/dev/null || true
     # Register QEMU for ARM cross-compilation
     - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
   script:
