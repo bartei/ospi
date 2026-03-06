@@ -1,9 +1,7 @@
 # GitLab CI/CD pipeline for OSPI (Raspberry Pi OS image builder)
 #
-# Requirements:
-#   - GitLab Runner with Docker executor configured for privileged mode
-#     (privileged = true in runner config.toml)
-#   - Runner tagged with "privileged" (adjust tags below if yours differ)
+# Runs on the shell executor runner (gitlab-shell-runner) which has
+# Docker and QEMU installed natively. No Docker-in-Docker needed.
 #
 # Pipeline triggers on pushes to main/dev branches and manual runs.
 # Versioning follows the same convention as the GitHub workflow:
@@ -17,21 +15,21 @@ stages:
   - upload
   - release
 
-variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: "/certs"
-
 workflow:
   rules:
     - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"
     - if: $CI_PIPELINE_SOURCE == "web"
+
+# All jobs run on the shell executor (no container images)
+default:
+  tags:
+    - shell
 
 # ---------------------------------------------------------------------------
 # Compute semantic version from git tags and commit messages
 # ---------------------------------------------------------------------------
 compute-version:
   stage: version
-  image: alpine/git:latest
   script:
     - |
       git fetch --tags
@@ -70,27 +68,20 @@ compute-version:
       dotenv: version.env
 
 # ---------------------------------------------------------------------------
-# Build the Raspberry Pi OS image via Docker-in-Docker
+# Build the Raspberry Pi OS image using Docker on the host
 # ---------------------------------------------------------------------------
 build-image:
   stage: build
-  image: docker:27
-  services:
-    - name: docker:27-dind
-      command: ["--storage-driver=overlay2"]
   before_script:
-    - apk add --no-cache bash git rsync grep coreutils
     # Register QEMU for ARM cross-compilation
     - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
   script:
-    - bash ./build-docker.sh -c ci.conf
+    - ./build-docker.sh -c ci.conf
   artifacts:
     paths:
       - deploy/*.zip
       - deploy/*.log
     expire_in: 30 days
-#  tags:
-#    - privileged
   timeout: 2h
 
 # ---------------------------------------------------------------------------
@@ -98,7 +89,6 @@ build-image:
 # ---------------------------------------------------------------------------
 upload-packages:
   stage: upload
-  image: curlimages/curl:latest
   needs:
     - job: compute-version
       artifacts: true
@@ -119,11 +109,19 @@ upload-packages:
 # ---------------------------------------------------------------------------
 create-release:
   stage: release
-  image: registry.gitlab.com/gitlab-org/release-cli:latest
   needs:
     - job: compute-version
       artifacts: true
     - job: upload-packages
+  before_script:
+    # release-cli is required for the release: keyword on shell executors
+    - |
+      if ! command -v release-cli &> /dev/null; then
+        curl --location --output /tmp/release-cli \
+          "https://gitlab.com/api/v4/projects/gitlab-org%2Frelease-cli/packages/generic/release-cli/latest/release-cli-linux-amd64"
+        chmod +x /tmp/release-cli
+        export PATH="/tmp:${PATH}"
+      fi
   script:
     - echo "Creating release v${VERSION}"
   release:
