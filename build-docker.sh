@@ -116,21 +116,23 @@ esac
 
 # Check if qemu-arm and /proc/sys/fs/binfmt_misc are present
 if [[ "${binfmt_misc_required}" == "1" ]]; then
-  if ! qemu_arm=$(which qemu-arm) ; then
-    echo "qemu-arm not found (please install qemu-user-binfmt)"
-    exit 1
-  fi
-  if [ ! -f /proc/sys/fs/binfmt_misc/register ]; then
-    echo "binfmt_misc required but not mounted, trying to mount it..."
-    if ! mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc ; then
-        echo "mounting binfmt_misc failed"
-        exit 1
+  # Check if binfmt_misc ARM entries are already registered (e.g., by docker/setup-qemu-action)
+  if ls /proc/sys/fs/binfmt_misc/qemu-arm* >/dev/null 2>&1 ; then
+    echo "binfmt_misc already configured for ARM, skipping manual setup"
+  else
+    # Need to manually register, so we need the qemu-arm binary
+    if ! qemu_arm=$(which qemu-arm 2>/dev/null || which qemu-arm-static 2>/dev/null) ; then
+      echo "qemu-arm not found (please install qemu-user-static or qemu-user-binfmt)"
+      exit 1
     fi
-    echo "binfmt_misc mounted"
-  fi
-  if ! ls /proc/sys/fs/binfmt_misc/qemu-arm* >/dev/null 2>&1 ; then
-    # Register qemu-arm for binfmt_misc only if no ARM entry exists yet
-    # (e.g., multiarch/qemu-user-static may have already registered one)
+    if [ ! -f /proc/sys/fs/binfmt_misc/register ]; then
+      echo "binfmt_misc required but not mounted, trying to mount it..."
+      if ! mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc ; then
+          echo "mounting binfmt_misc failed"
+          exit 1
+      fi
+      echo "binfmt_misc mounted"
+    fi
     reg="echo ':qemu-arm-rpi:M::"\
 "\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28\x00:"\
 "\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:"\
